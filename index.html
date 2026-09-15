@@ -1,276 +1,198 @@
-/* ===== REALISTIC CLICK / EARN SYSTEM ===== */
-
 (() => {
-  const old = document.getElementById("cc2ClickSystem");
-  if (old) old.remove();
+  "use strict";
 
-  const style = document.createElement("style");
-  style.id = "cc2ClickStyle";
+  // Undvik att systemet laddas två gånger
+  if (window.CC2ClickerLoaded) return;
+  window.CC2ClickerLoaded = true;
 
-  style.textContent = `
-    #cc2ClickSystem {
-      width: min(900px, 94%);
-      margin: 30px auto;
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
+  const STORAGE_COINS = "cc2_virtual_coins";
+  const STORAGE_CLICKS = "cc2_total_clicks";
+  const STORAGE_POWER = "cc2_click_power";
 
-    #cc2ClickButton {
-      width: 230px;
-      height: 230px;
-      border-radius: 50%;
-      border: 3px solid #343943;
-      background:
-        radial-gradient(circle at 35% 25%, #ffffff18, transparent 25%),
-        radial-gradient(circle, #303641, #111318 70%);
-      color: white;
-      font-size: 55px;
-      cursor: pointer;
-      box-shadow:
-        0 15px 45px #000b,
-        inset 0 0 30px #ffffff08;
-      transition: transform .08s, box-shadow .15s;
-      user-select: none;
-    }
+  let coins = Number(localStorage.getItem(STORAGE_COINS));
 
-    #cc2ClickButton:hover {
-      box-shadow:
-        0 18px 55px #000,
-        0 0 25px #ffffff12,
-        inset 0 0 35px #ffffff0c;
-    }
-
-    #cc2ClickButton:active {
-      transform: scale(.93);
-    }
-
-    .earn-text {
-      margin-top: 15px;
-      color: #9298a5;
-      font-size: 14px;
-    }
-
-    .power-box {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 22px;
-      flex-wrap: wrap;
-    }
-
-    .power {
-      background: #15181e;
-      border: 1px solid #292e38;
-      border-radius: 9px;
-      padding: 12px 18px;
-      min-width: 120px;
-    }
-
-    .power-value {
-      font-size: 19px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .power-label {
-      color: #737985;
-      font-size: 11px;
-      text-transform: uppercase;
-      margin-top: 3px;
-    }
-
-    .floating-coin {
-      position: fixed;
-      pointer-events: none;
-      z-index: 999999;
-      font-weight: 900;
-      color: #ffd84d;
-      text-shadow: 0 2px 8px #000;
-      animation: floatCoin .8s ease-out forwards;
-    }
-
-    @keyframes floatCoin {
-      0% {
-        opacity: 1;
-        transform: translate(-50%,0) scale(1);
-      }
-
-      100% {
-        opacity: 0;
-        transform: translate(-50%,-80px) scale(1.25);
-      }
-    }
-
-    .click-flash {
-      position: fixed;
-      pointer-events: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid #ffd84d;
-      animation: clickFlash .45s ease-out forwards;
-      z-index: 999998;
-    }
-
-    @keyframes clickFlash {
-      from {
-        opacity: .8;
-        transform: scale(.3);
-      }
-
-      to {
-        opacity: 0;
-        transform: scale(3);
-      }
-    }
-  `;
-
-  document.head.appendChild(style);
-
-  /* Find existing coin value */
-  function getCoins() {
-    const keys = ["coins", "coin", "cash", "money"];
-
-    for (const key of keys) {
-      const value = localStorage.getItem(key);
-
-      if (value !== null && !isNaN(value)) {
-        return Number(value);
-      }
-    }
-
-    return 0;
+  if (!Number.isFinite(coins)) {
+    coins = 0;
   }
 
-  function setCoins(amount) {
-    amount = Math.max(0, Math.floor(amount));
+  let clicks = Number(localStorage.getItem(STORAGE_CLICKS));
 
-    localStorage.setItem("coins", amount);
+  if (!Number.isFinite(clicks)) {
+    clicks = 0;
+  }
 
-    /* Update every common coin counter */
-    document.querySelectorAll(
-      "#coins,#coinCount,#money,#cash,.coins,.coin-count"
-    ).forEach(el => {
-      el.textContent = amount.toLocaleString();
+  let clickPower = Number(localStorage.getItem(STORAGE_POWER));
+
+  if (!Number.isFinite(clickPower) || clickPower < 1) {
+    clickPower = 1;
+  }
+
+  function save() {
+    localStorage.setItem(STORAGE_COINS, String(coins));
+    localStorage.setItem(STORAGE_CLICKS, String(clicks));
+    localStorage.setItem(STORAGE_POWER, String(clickPower));
+  }
+
+  function updateMoney() {
+    const money = document.getElementById("money");
+
+    if (money) {
+      money.textContent = Math.floor(coins).toLocaleString("en-US");
+    }
+  }
+
+  /*
+   * Skapa click-area
+   * Ingen innerHTML och inga inline-event.
+   */
+
+  let area = document.getElementById("cc2-earn-area");
+
+  if (!area) {
+    area = document.createElement("div");
+    area.id = "cc2-earn-area";
+
+    const title = document.createElement("div");
+    title.textContent = "EARN";
+
+    const description = document.createElement("div");
+    description.textContent = "Click to earn virtual coins";
+
+    const button = document.createElement("button");
+    button.id = "cc2-earn-button";
+    button.type = "button";
+    button.textContent = "🪙";
+
+    const stats = document.createElement("div");
+    stats.id = "cc2-click-stats";
+
+    const powerText = document.createElement("span");
+    powerText.id = "cc2-power";
+    powerText.textContent = `+${clickPower} per click`;
+
+    const clicksText = document.createElement("span");
+    clicksText.id = "cc2-clicks";
+    clicksText.textContent = `${clicks.toLocaleString()} clicks`;
+
+    stats.appendChild(powerText);
+    stats.appendChild(clicksText);
+
+    area.appendChild(title);
+    area.appendChild(description);
+    area.appendChild(button);
+    area.appendChild(stats);
+
+    /*
+     * Försök placera den på Earn-sidan.
+     * Om sidan inte finns ännu läggs den längst ner.
+     */
+
+    const pages = document.getElementById("pages");
+
+    if (pages) {
+      pages.appendChild(area);
+    } else {
+      document.body.appendChild(area);
+    }
+  }
+
+  const button = document.getElementById("cc2-earn-button");
+  const clicksText = document.getElementById("cc2-clicks");
+  const powerText = document.getElementById("cc2-power");
+
+  if (!button) return;
+
+  function updateStats() {
+    if (clicksText) {
+      clicksText.textContent =
+        `${clicks.toLocaleString()} clicks`;
+    }
+
+    if (powerText) {
+      powerText.textContent =
+        `+${clickPower} per click`;
+    }
+
+    updateMoney();
+  }
+
+  function floatingText(x, y) {
+    const text = document.createElement("div");
+
+    text.textContent = `+${clickPower} 🪙`;
+    text.setAttribute("aria-hidden", "true");
+
+    text.style.position = "fixed";
+    text.style.left = `${x}px`;
+    text.style.top = `${y}px`;
+    text.style.zIndex = "999999";
+    text.style.pointerEvents = "none";
+    text.style.fontWeight = "700";
+    text.style.fontSize = "18px";
+    text.style.color = "#ffd54a";
+    text.style.textShadow = "0 2px 6px rgba(0,0,0,.8)";
+    text.style.transform = "translate(-50%, -50%)";
+    text.style.transition =
+      "transform .65s ease, opacity .65s ease";
+
+    document.body.appendChild(text);
+
+    requestAnimationFrame(() => {
+      text.style.transform =
+        "translate(-50%, -100px)";
+      text.style.opacity = "0";
     });
+
+    window.setTimeout(() => {
+      text.remove();
+    }, 700);
   }
 
-  /* Create clicker */
-  const box = document.createElement("div");
-  box.id = "cc2ClickSystem";
+  function clickEffect() {
+    button.style.transform = "scale(.94)";
 
-  box.innerHTML = `
-    <button id="cc2ClickButton">🪙</button>
+    window.setTimeout(() => {
+      button.style.transform = "";
+    }, 80);
+  }
 
-    <div class="earn-text">
-      CLICK TO EARN
-    </div>
-
-    <div class="power-box">
-
-      <div class="power">
-        <div class="power-value" id="clickPowerDisplay">
-          +1
-        </div>
-        <div class="power-label">
-          Per Click
-        </div>
-      </div>
-
-      <div class="power">
-        <div class="power-value" id="totalClicksDisplay">
-          0
-        </div>
-        <div class="power-label">
-          Clicks
-        </div>
-      </div>
-
-    </div>
-  `;
-
-  document.body.appendChild(box);
-
-  const button = document.getElementById("cc2ClickButton");
-  const clicksDisplay =
-    document.getElementById("totalClicksDisplay");
-
-  let clickPower =
-    Number(localStorage.getItem("clickPower") || 1);
-
-  let totalClicks =
-    Number(localStorage.getItem("totalClicks") || 0);
-
-  document.getElementById(
-    "clickPowerDisplay"
-  ).textContent = "+" + clickPower;
-
-  clicksDisplay.textContent =
-    totalClicks.toLocaleString();
-
-  /* CLICK */
   button.addEventListener("click", event => {
+    coins += clickPower;
+    clicks++;
 
-    totalClicks++;
+    save();
+    updateStats();
+    clickEffect();
 
-    const oldCoins = getCoins();
-
-    setCoins(oldCoins + clickPower);
-
-    localStorage.setItem(
-      "totalClicks",
-      totalClicks
+    floatingText(
+      event.clientX,
+      event.clientY
     );
-
-    /* Update counter */
-    clicksDisplay.textContent =
-      totalClicks.toLocaleString();
-
-    /* Floating +coins */
-    const coin = document.createElement("div");
-
-    coin.className = "floating-coin";
-
-    coin.textContent =
-      "+" + clickPower + " 🪙";
-
-    coin.style.left =
-      event.clientX + "px";
-
-    coin.style.top =
-      event.clientY + "px";
-
-    document.body.appendChild(coin);
-
-    setTimeout(() => coin.remove(), 800);
-
-    /* Click flash */
-    const flash = document.createElement("div");
-
-    flash.className = "click-flash";
-
-    flash.style.left =
-      event.clientX - 10 + "px";
-
-    flash.style.top =
-      event.clientY - 10 + "px";
-
-    document.body.appendChild(flash);
-
-    setTimeout(() => flash.remove(), 450);
   });
 
-  /* Keyboard support */
+  /*
+   * Space = klicka
+   */
   document.addEventListener("keydown", event => {
+    if (event.code !== "Space") return;
+
+    const active = document.activeElement;
 
     if (
-      event.code === "Space" &&
-      document.activeElement.tagName !== "INPUT"
+      active &&
+      (
+        active.tagName === "INPUT" ||
+        active.tagName === "TEXTAREA" ||
+        active.tagName === "SELECT"
+      )
     ) {
-      event.preventDefault();
-      button.click();
+      return;
     }
 
+    event.preventDefault();
+    button.click();
   });
+
+  updateStats();
 
 })();
