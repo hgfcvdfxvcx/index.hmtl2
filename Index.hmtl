@@ -1,0 +1,1092 @@
+```html
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Clicker</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, #25204d 0%, #0c0b18 45%, #06060d 100%);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #292640;
+  background: rgba(10, 9, 20, .8);
+  backdrop-filter: blur(10px);
+}
+
+header h1 {
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: #aaa6c9;
+  margin-top: 5px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.stat {
+  background: #17152a;
+  border: 1px solid #312c50;
+  padding: 10px 18px;
+  border-radius: 12px;
+}
+
+.stat span {
+  font-weight: bold;
+  color: #8e7dff;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  border: none;
+  background: #18162b;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.tab:hover,
+.tab.active {
+  background: #705cff;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.click-area {
+  text-align: center;
+}
+
+.click-area h2 {
+  margin-bottom: 8px;
+}
+
+.click-area p {
+  color: #aaa6c9;
+  margin-bottom: 30px;
+}
+
+.coin-button {
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  border: 8px solid #8b7cff;
+  background: radial-gradient(circle at 35% 30%, #ffd86b, #ff9d00 55%, #d66c00);
+  box-shadow:
+    0 0 30px rgba(255, 180, 0, .35),
+    inset 0 0 25px rgba(255,255,255,.25);
+  cursor: pointer;
+  font-size: 70px;
+  transition: transform .08s;
+  user-select: none;
+}
+
+.coin-button:hover {
+  transform: scale(1.04);
+}
+
+.coin-button:active {
+  transform: scale(.93);
+}
+
+.click-power {
+  margin-top: 20px;
+  color: #bdb8e8;
+}
+
+.upgrades {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.upgrade {
+  background: #17152a;
+  border: 1px solid #312c50;
+  padding: 18px;
+  width: 230px;
+  border-radius: 15px;
+}
+
+.upgrade h3 {
+  margin-bottom: 8px;
+}
+
+.upgrade p {
+  color: #aaa6c9;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+button {
+  font-family: inherit;
+}
+
+.buy {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  border-radius: 9px;
+  background: #705cff;
+  color: white;
+  cursor: pointer;
+}
+
+.buy:hover {
+  background: #8575ff;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.case {
+  background: linear-gradient(145deg, #19162d, #100e1d);
+  border: 1px solid #353052;
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
+}
+
+.case-icon {
+  font-size: 65px;
+  margin-bottom: 15px;
+}
+
+.case h3 {
+  margin-bottom: 8px;
+}
+
+.case p {
+  color: #aaa6c9;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.open {
+  width: 100%;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #705cff, #a65cff);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.open:hover {
+  filter: brightness(1.15);
+}
+
+.spin-box {
+  text-align: center;
+}
+
+.wheel {
+  margin: 30px auto;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 12px solid #292343;
+  background:
+    conic-gradient(
+      #8d6cff 0deg 60deg,
+      #36d399 60deg 120deg,
+      #42a5ff 120deg 180deg,
+      #ffcf4a 180deg 240deg,
+      #ff6b9d 240deg 300deg,
+      #ff765c 300deg 360deg
+    );
+  box-shadow: 0 0 35px rgba(112,92,255,.25);
+  transition: transform 2.5s cubic-bezier(.15,.8,.2,1);
+  position: relative;
+}
+
+.wheel::after {
+  content: "★";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 60px;
+  color: white;
+  text-shadow: 0 2px 15px black;
+}
+
+.spin-button {
+  border: none;
+  padding: 15px 45px;
+  border-radius: 12px;
+  background: #705cff;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.spin-button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.inventory {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.item {
+  padding: 20px;
+  background: #17152a;
+  border: 1px solid #302b4a;
+  border-radius: 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.item-icon {
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
+.item-name {
+  font-weight: bold;
+}
+
+.item-rarity {
+  margin-top: 5px;
+  font-size: 13px;
+}
+
+.common { color: #aaa; }
+.uncommon { color: #58d68d; }
+.rare { color: #52a7ff; }
+.epic { color: #b16cff; }
+.legendary { color: #ffc94d; }
+
+.result-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.78);
+  display: none;
+  place-items: center;
+  z-index: 10;
+}
+
+.result-overlay.show {
+  display: grid;
+}
+
+.result {
+  width: min(420px, 90%);
+  padding: 35px;
+  background: #17152a;
+  border: 2px solid #705cff;
+  border-radius: 20px;
+  text-align: center;
+  animation: pop .3s ease;
+}
+
+.result .big-icon {
+  font-size: 90px;
+  margin: 20px;
+}
+
+.result h2 {
+  margin-bottom: 8px;
+}
+
+.result button {
+  margin-top: 25px;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  background: #705cff;
+  color: white;
+  cursor: pointer;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.float {
+  position: fixed;
+  pointer-events: none;
+  font-weight: bold;
+  color: #ffd34d;
+  animation: floatUp 1s ease-out forwards;
+  z-index: 20;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-90px);
+    opacity: 0;
+  }
+}
+
+.empty {
+  text-align: center;
+  color: #77738f;
+  padding: 50px;
+}
+
+.reset {
+  margin-top: 30px;
+  border: 1px solid #603c4b;
+  background: #241622;
+  color: #ff8cae;
+  padding: 10px 18px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 25px;
+  }
+
+  .coin-button {
+    width: 175px;
+    height: 175px;
+    font-size: 55px;
+  }
+
+  .wheel {
+    width: 230px;
+    height: 230px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎁 CASE CLICKER</h1>
+  <div class="subtitle">Öppna cases • Samla items • Bli rik på coins</div>
+
+  <div class="topbar">
+    <div class="stat">💰 Coins: <span id="coins">0</span></div>
+    <div class="stat">👆 Per klick: <span id="power">1</span></div>
+    <div class="stat">🎒 Items: <span id="itemCount">0</span></div>
+  </div>
+</header>
+
+<main>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showPage('clicker', this)">💰 Clicker</button>
+    <button class="tab" onclick="showPage('cases', this)">📦 Cases</button>
+    <button class="tab" onclick="showPage('spin', this)">🎡 Spin</button>
+    <button class="tab" onclick="showPage('inventory', this)">🎒 Inventory</button>
+  </div>
+
+  <!-- CLICKER -->
+
+  <section id="clicker" class="page active">
+    <div class="click-area">
+      <h2>Klicka för coins!</h2>
+      <p>Varje klick ger dig coins.</p>
+
+      <button class="coin-button" id="coinButton" onclick="clickCoin(event)">
+        🪙
+      </button>
+
+      <div class="click-power">
+        Du får <b id="powerText">1</b> coin per klick.
+      </div>
+
+      <div class="upgrades">
+
+        <div class="upgrade">
+          <h3>⚡ Starkare klick</h3>
+          <p>Öka coins per klick med +1.</p>
+          <button class="buy" onclick="buyUpgrade()">
+            Köp – <span id="upgradeCost">50</span> coins
+          </button>
+        </div>
+
+        <div class="upgrade">
+          <h3>🤖 Auto Clicker</h3>
+          <p>Ger automatiskt coins varje sekund.</p>
+          <button class="buy" onclick="buyAutoClicker()">
+            Köp – <span id="autoCost">500</span> coins
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+
+  <section id="cases" class="page">
+    <h2>📦 Cases</h2>
+    <p style="color:#aaa6c9;margin:8px 0 25px;">
+      Öppna cases med dina coins och få ett slumpmässigt item.
+    </p>
+
+    <div class="case-grid">
+
+      <div class="case">
+        <div class="case-icon">📦</div>
+        <h3>Basic Case</h3>
+        <p>En enkel case med vanliga items.</p>
+        <button class="open" onclick="openCase(100, 'basic')">
+          Öppna – 100 coins
+        </button>
+      </div>
+
+      <div class="case">
+        <div class="case-icon">💎</div>
+        <h3>Premium Case</h3>
+        <p>Större chans på sällsynta items.</p>
+        <button class="open" onclick="openCase(500, 'premium')">
+          Öppna – 500 coins
+        </button>
+      </div>
+
+      <div class="case">
+        <div class="case-icon">👑</div>
+        <h3>Legend Case</h3>
+        <p>För dig som jagar de mest sällsynta itemsen.</p>
+        <button class="open" onclick="openCase(2000, 'legend')">
+          Öppna – 2 000 coins
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SPIN -->
+
+  <section id="spin" class="page">
+    <div class="spin-box">
+
+      <h2>🎡 Gratis Spin</h2>
+
+      <p style="color:#aaa6c9;margin-top:8px;">
+        Använd coins för en spin och få ett slumpmässigt item.
+      </p>
+
+      <div class="wheel" id="wheel"></div>
+
+      <button
+        class="spin-button"
+        id="spinButton"
+        onclick="spin()">
+        SPIN – 250 coins
+      </button>
+
+      <p style="margin-top:15px;color:#77738f;">
+        Allt i spelet är virtuell spelvaluta.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- INVENTORY -->
+
+  <section id="inventory" class="page">
+
+    <h2>🎒 Inventory</h2>
+
+    <p style="color:#aaa6c9;margin:8px 0 25px;">
+      Dina samlade items.
+    </p>
+
+    <div id="inventory" class="inventory"></div>
+
+    <button class="reset" onclick="resetGame()">
+      ♻️ Återställ spel
+    </button>
+
+  </section>
+
+</main>
+
+<!-- RESULT -->
+
+<div class="result-overlay" id="resultOverlay">
+
+  <div class="result">
+
+    <div class="big-icon" id="resultIcon">🎁</div>
+
+    <h2 id="resultName">Item</h2>
+
+    <div id="resultRarity" class="item-rarity">
+      Common
+    </div>
+
+    <button onclick="closeResult()">
+      Fortsätt
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+/* =========================
+   GAME DATA
+========================= */
+
+const items = [
+
+  {
+    name: "Blue Pixel",
+    icon: "🔷",
+    rarity: "common",
+    value: 20
+  },
+
+  {
+    name: "Green Cube",
+    icon: "🟩",
+    rarity: "common",
+    value: 30
+  },
+
+  {
+    name: "Silver Star",
+    icon: "⭐",
+    rarity: "uncommon",
+    value: 75
+  },
+
+  {
+    name: "Neon Orb",
+    icon: "🔮",
+    rarity: "rare",
+    value: 150
+  },
+
+  {
+    name: "Galaxy Crystal",
+    icon: "💠",
+    rarity: "epic",
+    value: 500
+  },
+
+  {
+    name: "Golden Crown",
+    icon: "👑",
+    rarity: "legendary",
+    value: 2000
+  },
+
+  {
+    name: "Dragon Gem",
+    icon: "🐉",
+    rarity: "legendary",
+    value: 5000
+  }
+
+];
+
+
+/* =========================
+   GAME STATE
+========================= */
+
+let game = JSON.parse(
+  localStorage.getItem("caseClickerSave")
+) || {
+
+  coins: 0,
+  power: 1,
+  upgradeCost: 50,
+  autoClickers: 0,
+  autoCost: 500,
+  inventory: [],
+  totalClicks: 0
+
+};
+
+
+/* =========================
+   UI
+========================= */
+
+function updateUI() {
+
+  document.getElementById("coins").textContent =
+    Math.floor(game.coins).toLocaleString();
+
+  document.getElementById("power").textContent =
+    game.power;
+
+  document.getElementById("powerText").textContent =
+    game.power;
+
+  document.getElementById("upgradeCost").textContent =
+    game.upgradeCost.toLocaleString();
+
+  document.getElementById("autoCost").textContent =
+    game.autoCost.toLocaleString();
+
+  document.getElementById("itemCount").textContent =
+    game.inventory.length;
+
+  renderInventory();
+
+  saveGame();
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function saveGame() {
+
+  localStorage.setItem(
+    "caseClickerSave",
+    JSON.stringify(game)
+  );
+
+}
+
+
+/* =========================
+   CLICK
+========================= */
+
+function clickCoin(event) {
+
+  game.coins += game.power;
+  game.totalClicks++;
+
+  createFloat(
+    "+" + game.power,
+    event.clientX,
+    event.clientY
+  );
+
+  updateUI();
+
+}
+
+
+/* =========================
+   FLOATING TEXT
+========================= */
+
+function createFloat(text, x, y) {
+
+  const el = document.createElement("div");
+
+  el.className = "float";
+  el.textContent = text;
+
+  el.style.left = x + "px";
+  el.style.top = y + "px";
+
+  document.body.appendChild(el);
+
+  setTimeout(() => el.remove(), 1000);
+
+}
+
+
+/* =========================
+   UPGRADE
+========================= */
+
+function buyUpgrade() {
+
+  if (game.coins < game.upgradeCost) {
+
+    alert("Du har inte tillräckligt med coins!");
+
+    return;
+
+  }
+
+  game.coins -= game.upgradeCost;
+
+  game.power++;
+
+  game.upgradeCost =
+    Math.floor(game.upgradeCost * 1.65);
+
+  updateUI();
+
+}
+
+
+/* =========================
+   AUTO CLICKER
+========================= */
+
+function buyAutoClicker() {
+
+  if (game.coins < game.autoCost) {
+
+    alert("Du har inte tillräckligt med coins!");
+
+    return;
+
+  }
+
+  game.coins -= game.autoCost;
+
+  game.autoClickers++;
+
+  game.autoCost =
+    Math.floor(game.autoCost * 1.8);
+
+  updateUI();
+
+}
+
+
+/* Auto coins */
+
+setInterval(() => {
+
+  if (game.autoClickers > 0) {
+
+    game.coins += game.autoClickers;
+
+    updateUI();
+
+  }
+
+}, 1000);
+
+
+/* =========================
+   RANDOM ITEM
+========================= */
+
+function getRandomItem(type = "basic") {
+
+  let roll = Math.random() * 100;
+
+  let rarity;
+
+  if (type === "basic") {
+
+    if (roll < 60) rarity = "common";
+    else if (roll < 85) rarity = "uncommon";
+    else if (roll < 96) rarity = "rare";
+    else if (roll < 99) rarity = "epic";
+    else rarity = "legendary";
+
+  }
+
+  else if (type === "premium") {
+
+    if (roll < 30) rarity = "common";
+    else if (roll < 60) rarity = "uncommon";
+    else if (roll < 85) rarity = "rare";
+    else if (roll < 97) rarity = "epic";
+    else rarity = "legendary";
+
+  }
+
+  else {
+
+    if (roll < 10) rarity = "common";
+    else if (roll < 30) rarity = "uncommon";
+    else if (roll < 60) rarity = "rare";
+    else if (roll < 85) rarity = "epic";
+    else rarity = "legendary";
+
+  }
+
+  const possible =
+    items.filter(item => item.rarity === rarity);
+
+  return possible[
+    Math.floor(Math.random() * possible.length)
+  ];
+
+}
+
+
+/* =========================
+   OPEN CASE
+========================= */
+
+function openCase(cost, type) {
+
+  if (game.coins < cost) {
+
+    alert("Du har inte tillräckligt med coins!");
+
+    return;
+
+  }
+
+  game.coins -= cost;
+
+  const item = getRandomItem(type);
+
+  game.inventory.push(item);
+
+  showResult(item);
+
+  updateUI();
+
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+function showResult(item) {
+
+  document.getElementById("resultIcon")
+    .textContent = item.icon;
+
+  document.getElementById("resultName")
+    .textContent = item.name;
+
+  const rarity =
+    document.getElementById("resultRarity");
+
+  rarity.textContent =
+    item.rarity.toUpperCase();
+
+  rarity.className =
+    "item-rarity " + item.rarity;
+
+  document.getElementById("resultOverlay")
+    .classList.add("show");
+
+}
+
+
+function closeResult() {
+
+  document.getElementById("resultOverlay")
+    .classList.remove("show");
+
+}
+
+
+/* =========================
+   SPIN
+========================= */
+
+let spinning = false;
+
+function spin() {
+
+  const cost = 250;
+
+  if (spinning) return;
+
+  if (game.coins < cost) {
+
+    alert("Du har inte tillräckligt med coins!");
+
+    return;
+
+  }
+
+  spinning = true;
+
+  game.coins -= cost;
+
+  const wheel =
+    document.getElementById("wheel");
+
+  const turns =
+    5 + Math.floor(Math.random() * 4);
+
+  const degrees =
+    turns * 360 +
+    Math.floor(Math.random() * 360);
+
+  wheel.style.transform =
+    `rotate(${degrees}deg)`;
+
+  document.getElementById("spinButton")
+    .disabled = true;
+
+  setTimeout(() => {
+
+    const item = getRandomItem("premium");
+
+    game.inventory.push(item);
+
+    showResult(item);
+
+    spinning = false;
+
+    document.getElementById("spinButton")
+      .disabled = false;
+
+    updateUI();
+
+  }, 2600);
+
+}
+
+
+/* =========================
+   INVENTORY
+========================= */
+
+function renderInventory() {
+
+  const container =
+    document.getElementById("inventory");
+
+  if (game.inventory.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty">
+        🎒<br><br>
+        Ditt inventory är tomt.<br>
+        Öppna ett case för att få ditt första item!
+      </div>
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML =
+    game.inventory.map(item => `
+
+      <div class="item">
+
+        <div class="item-icon">
+          ${item.icon}
+        </div>
+
+        <div class="item-name">
+          ${item.name}
+        </div>
+
+        <div class="item-rarity ${item.rarity}">
+          ${item.rarity.toUpperCase()}
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   TABS
+========================= */
+
+function showPage(page, button) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(b => b.classList.remove("active"));
+
+  document
+    .getElementById(page)
+    .classList.add("active");
+
+  button.classList.add("active");
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetGame() {
+
+  if (!confirm(
+    "Är du säker? All progress kommer att raderas."
+  )) return;
+
+  localStorage.removeItem("caseClickerSave");
+
+  location.reload();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+updateUI();
+
+</script>
+
+</body>
+</html>
+```
