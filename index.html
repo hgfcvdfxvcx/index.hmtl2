@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Clicker</title>
+<title>CaseStrike — Case Opening Game</title>
 
 <style>
 * {
@@ -14,78 +13,77 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   background:
-    radial-gradient(circle at top, #25204d 0%, #0c0b18 45%, #06060d 100%);
-  color: white;
+    radial-gradient(circle at top, #202735 0%, #0b0e14 45%, #07090d 100%);
+  color: #fff;
   min-height: 100vh;
-  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
 }
 
 header {
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid #292640;
-  background: rgba(10, 9, 20, .8);
-  backdrop-filter: blur(10px);
+  height: 70px;
+  background: rgba(10, 13, 19, .95);
+  border-bottom: 1px solid #303744;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
-header h1 {
-  font-size: 32px;
-  letter-spacing: 2px;
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 1px;
 }
 
-.subtitle {
-  color: #aaa6c9;
-  margin-top: 5px;
+.logo span {
+  color: #ffb300;
 }
 
-.topbar {
+.balance {
+  background: #171c25;
+  border: 1px solid #343c4a;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #ffd15c;
+  font-weight: bold;
+}
+
+nav {
+  background: #11151c;
+  border-bottom: 1px solid #292f3a;
   display: flex;
   justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
-  margin-top: 15px;
+  gap: 5px;
+  padding: 8px;
 }
 
-.stat {
-  background: #17152a;
-  border: 1px solid #312c50;
-  padding: 10px 18px;
-  border-radius: 12px;
+nav button {
+  background: transparent;
+  border: 0;
+  color: #aeb6c4;
+  padding: 12px 20px;
+  border-radius: 7px;
+  cursor: pointer;
 }
 
-.stat span {
-  font-weight: bold;
-  color: #8e7dff;
+nav button:hover,
+nav button.active {
+  background: #252c37;
+  color: white;
 }
 
 main {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
-  padding: 30px 20px;
-}
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 30px;
-}
-
-.tab {
-  border: none;
-  background: #18162b;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.tab:hover,
-.tab.active {
-  background: #705cff;
+  padding: 30px 20px 70px;
 }
 
 .page {
@@ -96,325 +94,307 @@ main {
   display: block;
 }
 
-.click-area {
+.hero {
   text-align: center;
+  padding: 25px 10px 35px;
 }
 
-.click-area h2 {
-  margin-bottom: 8px;
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
 }
 
-.click-area p {
-  color: #aaa6c9;
-  margin-bottom: 30px;
+.hero p {
+  color: #9ca6b6;
 }
 
-.coin-button {
-  width: 210px;
-  height: 210px;
-  border-radius: 50%;
-  border: 8px solid #8b7cff;
-  background: radial-gradient(circle at 35% 30%, #ffd86b, #ff9d00 55%, #d66c00);
-  box-shadow:
-    0 0 30px rgba(255, 180, 0, .35),
-    inset 0 0 25px rgba(255,255,255,.25);
-  cursor: pointer;
-  font-size: 70px;
-  transition: transform .08s;
-  user-select: none;
-}
-
-.coin-button:hover {
-  transform: scale(1.04);
-}
-
-.coin-button:active {
-  transform: scale(.93);
-}
-
-.click-power {
-  margin-top: 20px;
-  color: #bdb8e8;
-}
-
-.upgrades {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-
-.upgrade {
-  background: #17152a;
-  border: 1px solid #312c50;
-  padding: 18px;
-  width: 230px;
-  border-radius: 15px;
-}
-
-.upgrade h3 {
-  margin-bottom: 8px;
-}
-
-.upgrade p {
-  color: #aaa6c9;
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-
-button {
-  font-family: inherit;
-}
-
-.buy {
-  width: 100%;
-  border: none;
-  padding: 10px;
-  border-radius: 9px;
-  background: #705cff;
-  color: white;
-  cursor: pointer;
-}
-
-.buy:hover {
-  background: #8575ff;
+.section-title {
+  font-size: 24px;
+  margin-bottom: 18px;
 }
 
 .case-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
 }
 
-.case {
-  background: linear-gradient(145deg, #19162d, #100e1d);
-  border: 1px solid #353052;
-  border-radius: 18px;
-  padding: 25px;
-  text-align: center;
-}
-
-.case-icon {
-  font-size: 65px;
-  margin-bottom: 15px;
-}
-
-.case h3 {
-  margin-bottom: 8px;
-}
-
-.case p {
-  color: #aaa6c9;
-  margin-bottom: 18px;
-  font-size: 14px;
-}
-
-.open {
-  width: 100%;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #705cff, #a65cff);
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.open:hover {
-  filter: brightness(1.15);
-}
-
-.spin-box {
-  text-align: center;
-}
-
-.wheel {
-  margin: 30px auto;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  border: 12px solid #292343;
-  background:
-    conic-gradient(
-      #8d6cff 0deg 60deg,
-      #36d399 60deg 120deg,
-      #42a5ff 120deg 180deg,
-      #ffcf4a 180deg 240deg,
-      #ff6b9d 240deg 300deg,
-      #ff765c 300deg 360deg
-    );
-  box-shadow: 0 0 35px rgba(112,92,255,.25);
-  transition: transform 2.5s cubic-bezier(.15,.8,.2,1);
-  position: relative;
-}
-
-.wheel::after {
-  content: "★";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 60px;
-  color: white;
-  text-shadow: 0 2px 15px black;
-}
-
-.spin-button {
-  border: none;
-  padding: 15px 45px;
+.case-card {
+  background: linear-gradient(145deg, #181e28, #10141b);
+  border: 1px solid #303846;
   border-radius: 12px;
-  background: #705cff;
-  color: white;
-  font-size: 17px;
+  overflow: hidden;
+  transition: .2s;
+}
+
+.case-card:hover {
+  transform: translateY(-4px);
+  border-color: #ffb300;
+}
+
+.case-image {
+  height: 155px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle, #384457 0%, #151a22 70%);
+  font-size: 65px;
+}
+
+.case-info {
+  padding: 16px;
+}
+
+.case-info h3 {
+  margin-bottom: 7px;
+}
+
+.case-info p {
+  color: #8792a3;
+  font-size: 14px;
+  margin-bottom: 13px;
+}
+
+.price {
+  color: #ffd15c;
   font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.btn {
+  width: 100%;
+  border: 0;
+  padding: 11px;
+  border-radius: 7px;
   cursor: pointer;
+  font-weight: bold;
+  color: #111;
+  background: #ffb300;
 }
 
-.spin-button:disabled {
-  opacity: .45;
-  cursor: not-allowed;
+.btn:hover {
+  background: #ffc43d;
 }
 
-.inventory {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 15px;
+.btn.secondary {
+  background: #303846;
+  color: white;
 }
 
-.item {
-  padding: 20px;
-  background: #17152a;
-  border: 1px solid #302b4a;
-  border-radius: 14px;
+.btn.danger {
+  background: #c94545;
+  color: white;
+}
+
+.open-area {
   text-align: center;
+}
+
+.selected-case {
+  margin-bottom: 20px;
+  color: #ffd15c;
+}
+
+.reel-wrapper {
   position: relative;
   overflow: hidden;
+  max-width: 1000px;
+  margin: 20px auto;
+  border: 2px solid #414b5c;
+  border-radius: 10px;
+  background: #0e1218;
 }
 
-.item-icon {
+.pointer {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: #ffb300;
+  box-shadow: 0 0 15px #ffb300;
+}
+
+.reel {
+  display: flex;
+  gap: 8px;
+  padding: 15px;
+  transform: translateX(0);
+}
+
+.reel-item {
+  min-width: 145px;
+  height: 135px;
+  border-radius: 8px;
+  background: #191f29;
+  border: 1px solid #394352;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.reel-item .emoji {
   font-size: 45px;
-  margin-bottom: 10px;
 }
 
 .item-name {
-  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
 }
 
-.item-rarity {
-  margin-top: 5px;
-  font-size: 13px;
-}
-
-.common { color: #aaa; }
-.uncommon { color: #58d68d; }
-.rare { color: #52a7ff; }
-.epic { color: #b16cff; }
-.legendary { color: #ffc94d; }
-
-.result-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.78);
-  display: none;
-  place-items: center;
-  z-index: 10;
-}
-
-.result-overlay.show {
-  display: grid;
-}
+.common { border-bottom: 3px solid #b5b5b5; }
+.uncommon { border-bottom: 3px solid #42a5f5; }
+.rare { border-bottom: 3px solid #ab6cff; }
+.epic { border-bottom: 3px solid #e83cff; }
+.legendary { border-bottom: 3px solid #ffb300; }
 
 .result {
-  width: min(420px, 90%);
-  padding: 35px;
-  background: #17152a;
-  border: 2px solid #705cff;
-  border-radius: 20px;
-  text-align: center;
-  animation: pop .3s ease;
+  display: none;
+  margin: 25px auto;
+  max-width: 400px;
+  padding: 25px;
+  background: #171d27;
+  border: 1px solid #3b4555;
+  border-radius: 12px;
+}
+
+.result.show {
+  display: block;
 }
 
 .result .big-icon {
   font-size: 90px;
-  margin: 20px;
+  margin: 10px;
 }
 
 .result h2 {
   margin-bottom: 8px;
 }
 
-.result button {
-  margin-top: 25px;
-  border: none;
-  padding: 12px 30px;
+.inventory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.inventory-card {
+  background: #171d26;
+  border: 1px solid #303846;
   border-radius: 10px;
-  background: #705cff;
-  color: white;
+  padding: 18px;
+  text-align: center;
+}
+
+.inventory-card .icon {
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+.inventory-card .sell {
+  margin-top: 12px;
+  padding: 9px;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
   cursor: pointer;
+  background: #303846;
+  color: white;
 }
 
-@keyframes pop {
-  from {
-    transform: scale(.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+.upgrade {
+  max-width: 650px;
+  margin: auto;
+  background: #151a22;
+  border: 1px solid #303846;
+  border-radius: 12px;
+  padding: 25px;
 }
 
-.float {
-  position: fixed;
-  pointer-events: none;
-  font-weight: bold;
-  color: #ffd34d;
-  animation: floatUp 1s ease-out forwards;
-  z-index: 20;
+.upgrade select {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  background: #0e1218;
+  color: white;
+  border: 1px solid #3a4350;
+  border-radius: 7px;
 }
 
-@keyframes floatUp {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-90px);
-    opacity: 0;
-  }
+.upgrade-result {
+  text-align: center;
+  margin-top: 20px;
+  min-height: 100px;
+}
+
+.admin {
+  max-width: 600px;
+  margin: auto;
+  background: #151a22;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #343d4b;
+}
+
+.admin input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #0c1016;
+  color: white;
+  border: 1px solid #3a4350;
+  border-radius: 7px;
+}
+
+.admin-panel {
+  display: none;
+  margin-top: 20px;
+}
+
+.admin-panel.show {
+  display: block;
+}
+
+.admin-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-row input {
+  margin: 0;
+}
+
+.message {
+  margin-top: 12px;
+  color: #ffcf58;
 }
 
 .empty {
   text-align: center;
-  color: #77738f;
   padding: 50px;
+  color: #7f8998;
 }
 
-.reset {
-  margin-top: 30px;
-  border: 1px solid #603c4b;
-  background: #241622;
-  color: #ff8cae;
-  padding: 10px 18px;
-  border-radius: 9px;
-  cursor: pointer;
-}
-
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 25px;
+@media(max-width: 650px) {
+  header {
+    padding: 0 15px;
   }
 
-  .coin-button {
-    width: 175px;
-    height: 175px;
-    font-size: 55px;
+  nav {
+    overflow-x: auto;
+    justify-content: flex-start;
   }
 
-  .wheel {
-    width: 230px;
-    height: 230px;
+  nav button {
+    white-space: nowrap;
+  }
+
+  .hero h1 {
+    font-size: 30px;
   }
 }
 </style>
@@ -423,170 +403,159 @@ button {
 <body>
 
 <header>
-  <h1>🎁 CASE CLICKER</h1>
-  <div class="subtitle">Öppna cases • Samla items • Bli rik på coins</div>
-
-  <div class="topbar">
-    <div class="stat">💰 Coins: <span id="coins">0</span></div>
-    <div class="stat">👆 Per klick: <span id="power">1</span></div>
-    <div class="stat">🎒 Items: <span id="itemCount">0</span></div>
-  </div>
+  <div class="logo">CASE<span>STRIKE</span></div>
+  <div class="balance">💰 <span id="balance">10,000</span></div>
 </header>
+
+<nav>
+  <button class="nav-btn active" data-page="play">Play</button>
+  <button class="nav-btn" data-page="inventory">Inventory</button>
+  <button class="nav-btn" data-page="upgrade">Upgrade</button>
+  <button class="nav-btn" data-page="admin">Owner</button>
+</nav>
 
 <main>
 
-  <div class="tabs">
-    <button class="tab active" onclick="showPage('clicker', this)">💰 Clicker</button>
-    <button class="tab" onclick="showPage('cases', this)">📦 Cases</button>
-    <button class="tab" onclick="showPage('spin', this)">🎡 Spin</button>
-    <button class="tab" onclick="showPage('inventory', this)">🎒 Inventory</button>
+<!-- PLAY -->
+<section id="play" class="page active">
+
+  <div class="hero">
+    <h1>Open Cases</h1>
+    <p>Collect fictional weapons, knives and skins using in-game coins.</p>
   </div>
 
-  <!-- CLICKER -->
+  <div class="case-grid" id="caseGrid"></div>
 
-  <section id="clicker" class="page active">
-    <div class="click-area">
-      <h2>Klicka för coins!</h2>
-      <p>Varje klick ger dig coins.</p>
+</section>
 
-      <button class="coin-button" id="coinButton" onclick="clickCoin(event)">
-        🪙
+<!-- OPEN -->
+<section id="open" class="page">
+
+  <div class="hero">
+    <h1>Case Opening</h1>
+    <p class="selected-case" id="selectedCase"></p>
+  </div>
+
+  <div class="open-area">
+
+    <div class="reel-wrapper">
+      <div class="pointer"></div>
+      <div class="reel" id="reel"></div>
+    </div>
+
+    <button class="btn" id="spinBtn" onclick="spinCase()">
+      OPEN CASE
+    </button>
+
+    <div class="result" id="result">
+      <div class="big-icon" id="resultIcon"></div>
+      <h2 id="resultName"></h2>
+      <p id="resultRarity"></p>
+      <br>
+      <button class="btn secondary" onclick="goTo('inventory')">
+        VIEW INVENTORY
       </button>
-
-      <div class="click-power">
-        Du får <b id="powerText">1</b> coin per klick.
-      </div>
-
-      <div class="upgrades">
-
-        <div class="upgrade">
-          <h3>⚡ Starkare klick</h3>
-          <p>Öka coins per klick med +1.</p>
-          <button class="buy" onclick="buyUpgrade()">
-            Köp – <span id="upgradeCost">50</span> coins
-          </button>
-        </div>
-
-        <div class="upgrade">
-          <h3>🤖 Auto Clicker</h3>
-          <p>Ger automatiskt coins varje sekund.</p>
-          <button class="buy" onclick="buyAutoClicker()">
-            Köp – <span id="autoCost">500</span> coins
-          </button>
-        </div>
-
-      </div>
     </div>
-  </section>
 
-  <!-- CASES -->
+  </div>
 
-  <section id="cases" class="page">
-    <h2>📦 Cases</h2>
-    <p style="color:#aaa6c9;margin:8px 0 25px;">
-      Öppna cases med dina coins och få ett slumpmässigt item.
-    </p>
+</section>
 
-    <div class="case-grid">
+<!-- INVENTORY -->
+<section id="inventory" class="page">
 
-      <div class="case">
-        <div class="case-icon">📦</div>
-        <h3>Basic Case</h3>
-        <p>En enkel case med vanliga items.</p>
-        <button class="open" onclick="openCase(100, 'basic')">
-          Öppna – 100 coins
+  <div class="hero">
+    <h1>Your Inventory</h1>
+    <p>Items you have collected.</p>
+  </div>
+
+  <div class="inventory" id="inventoryGrid"></div>
+
+</section>
+
+<!-- UPGRADE -->
+<section id="upgrade" class="page">
+
+  <div class="hero">
+    <h1>Weapon Upgrade</h1>
+    <p>Trade an item for a chance at a higher-tier fictional item.</p>
+  </div>
+
+  <div class="upgrade">
+
+    <label>Select an item:</label>
+
+    <select id="upgradeSelect"></select>
+
+    <button class="btn" onclick="upgradeItem()">
+      TRY UPGRADE
+    </button>
+
+    <div class="upgrade-result" id="upgradeResult"></div>
+
+  </div>
+
+</section>
+
+<!-- ADMIN -->
+<section id="admin" class="page">
+
+  <div class="hero">
+    <h1>Owner Panel</h1>
+    <p>Owner controls for your game.</p>
+  </div>
+
+  <div class="admin">
+
+    <h2>Admin Login</h2>
+
+    <input
+      type="password"
+      id="adminCode"
+      placeholder="Enter owner code"
+    >
+
+    <button class="btn" onclick="loginAdmin()">
+      ENTER
+    </button>
+
+    <div id="adminMessage" class="message"></div>
+
+    <div id="adminPanel" class="admin-panel">
+
+      <hr style="border-color:#303846;margin:20px 0">
+
+      <h2>Game Controls</h2>
+
+      <div class="admin-row">
+        <input
+          type="number"
+          id="moneyAmount"
+          placeholder="Coins"
+        >
+        <button class="btn" onclick="giveMoney()">
+          Add Coins
         </button>
       </div>
-
-      <div class="case">
-        <div class="case-icon">💎</div>
-        <h3>Premium Case</h3>
-        <p>Större chans på sällsynta items.</p>
-        <button class="open" onclick="openCase(500, 'premium')">
-          Öppna – 500 coins
-        </button>
-      </div>
-
-      <div class="case">
-        <div class="case-icon">👑</div>
-        <h3>Legend Case</h3>
-        <p>För dig som jagar de mest sällsynta itemsen.</p>
-        <button class="open" onclick="openCase(2000, 'legend')">
-          Öppna – 2 000 coins
-        </button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- SPIN -->
-
-  <section id="spin" class="page">
-    <div class="spin-box">
-
-      <h2>🎡 Gratis Spin</h2>
-
-      <p style="color:#aaa6c9;margin-top:8px;">
-        Använd coins för en spin och få ett slumpmässigt item.
-      </p>
-
-      <div class="wheel" id="wheel"></div>
 
       <button
-        class="spin-button"
-        id="spinButton"
-        onclick="spin()">
-        SPIN – 250 coins
+        class="btn secondary"
+        onclick="resetGame()"
+      >
+        Reset Game
       </button>
 
-      <p style="margin-top:15px;color:#77738f;">
-        Allt i spelet är virtuell spelvaluta.
+      <p class="message">
+        Owner mode unlocked.
       </p>
 
     </div>
-  </section>
-
-  <!-- INVENTORY -->
-
-  <section id="inventory" class="page">
-
-    <h2>🎒 Inventory</h2>
-
-    <p style="color:#aaa6c9;margin:8px 0 25px;">
-      Dina samlade items.
-    </p>
-
-    <div id="inventory" class="inventory"></div>
-
-    <button class="reset" onclick="resetGame()">
-      ♻️ Återställ spel
-    </button>
-
-  </section>
-
-</main>
-
-<!-- RESULT -->
-
-<div class="result-overlay" id="resultOverlay">
-
-  <div class="result">
-
-    <div class="big-icon" id="resultIcon">🎁</div>
-
-    <h2 id="resultName">Item</h2>
-
-    <div id="resultRarity" class="item-rarity">
-      Common
-    </div>
-
-    <button onclick="closeResult()">
-      Fortsätt
-    </button>
 
   </div>
 
-</div>
+</section>
+
+</main>
 
 <script>
 
@@ -594,400 +563,545 @@ button {
    GAME DATA
 ========================= */
 
-const items = [
+const ADMIN_CODE = "Adminmelle123";
 
+let balance = Number(localStorage.getItem("balance")) || 10000;
+
+let inventory =
+  JSON.parse(localStorage.getItem("inventory")) || [];
+
+let currentCase = null;
+
+
+/*
+  Fictional cases.
+  You can replace the emoji with your own image URLs later.
+*/
+
+const cases = [
   {
-    name: "Blue Pixel",
-    icon: "🔷",
-    rarity: "common",
-    value: 20
+    id: "starter",
+    name: "Starter Case",
+    price: 500,
+    icon: "📦",
+    items: ["ember", "shadow", "frost", "nova"]
   },
 
   {
-    name: "Green Cube",
-    icon: "🟩",
-    rarity: "common",
-    value: 30
+    id: "urban",
+    name: "Urban Case",
+    price: 1000,
+    icon: "🧰",
+    items: ["shadow", "viper", "phantom", "crimson"]
   },
 
   {
-    name: "Silver Star",
-    icon: "⭐",
-    rarity: "uncommon",
-    value: 75
+    id: "elite",
+    name: "Elite Case",
+    price: 2000,
+    icon: "💼",
+    items: ["viper", "phantom", "crimson", "royal"]
   },
 
   {
-    name: "Neon Orb",
-    icon: "🔮",
-    rarity: "rare",
-    value: 150
+    id: "night",
+    name: "Night Ops Case",
+    price: 3500,
+    icon: "🗃️",
+    items: ["phantom", "crimson", "royal", "void"]
   },
 
   {
-    name: "Galaxy Crystal",
-    icon: "💠",
-    rarity: "epic",
-    value: 500
-  },
-
-  {
-    name: "Golden Crown",
-    icon: "👑",
-    rarity: "legendary",
-    value: 2000
-  },
-
-  {
-    name: "Dragon Gem",
+    id: "dragon",
+    name: "Dragon Case",
+    price: 5000,
     icon: "🐉",
-    rarity: "legendary",
-    value: 5000
-  }
+    items: ["crimson", "royal", "void", "dragon"]
+  },
 
+  {
+    id: "legend",
+    name: "Legend Case",
+    price: 7500,
+    icon: "👑",
+    items: ["royal", "void", "dragon", "solar"]
+  }
 ];
 
 
-/* =========================
-   GAME STATE
-========================= */
+/*
+  Fictional weapons/items.
+*/
 
-let game = JSON.parse(
-  localStorage.getItem("caseClickerSave")
-) || {
+const items = {
 
-  coins: 0,
-  power: 1,
-  upgradeCost: 50,
-  autoClickers: 0,
-  autoCost: 500,
-  inventory: [],
-  totalClicks: 0
+  ember: {
+    name: "Ember Fang",
+    type: "Knife",
+    rarity: "common",
+    value: 350,
+    icon: "🔪"
+  },
+
+  shadow: {
+    name: "Shadow Strike",
+    type: "Pistol",
+    rarity: "common",
+    value: 600,
+    icon: "🔫"
+  },
+
+  frost: {
+    name: "Frostbite SMG",
+    type: "SMG",
+    rarity: "uncommon",
+    value: 900,
+    icon: "❄️"
+  },
+
+  nova: {
+    name: "Nova Burst",
+    type: "Rifle",
+    rarity: "uncommon",
+    value: 1200,
+    icon: "💥"
+  },
+
+  viper: {
+    name: "Viper Edge",
+    type: "Knife",
+    rarity: "rare",
+    value: 1800,
+    icon: "🔪"
+  },
+
+  phantom: {
+    name: "Phantom Rifle",
+    type: "Rifle",
+    rarity: "rare",
+    value: 2500,
+    icon: "🎯"
+  },
+
+  crimson: {
+    name: "Crimson Talon",
+    type: "Knife",
+    rarity: "epic",
+    value: 4000,
+    icon: "🗡️"
+  },
+
+  royal: {
+    name: "Royal Specter",
+    type: "Knife",
+    rarity: "epic",
+    value: 6500,
+    icon: "⚔️"
+  },
+
+  void: {
+    name: "Void Reaper",
+    type: "Knife",
+    rarity: "legendary",
+    value: 10000,
+    icon: "🌑"
+  },
+
+  dragon: {
+    name: "Dragon Fang",
+    type: "Knife",
+    rarity: "legendary",
+    value: 15000,
+    icon: "🐲"
+  },
+
+  solar: {
+    name: "Solar Crown",
+    type: "Knife",
+    rarity: "legendary",
+    value: 25000,
+    icon: "☀️"
+  }
 
 };
 
 
 /* =========================
-   UI
-========================= */
-
-function updateUI() {
-
-  document.getElementById("coins").textContent =
-    Math.floor(game.coins).toLocaleString();
-
-  document.getElementById("power").textContent =
-    game.power;
-
-  document.getElementById("powerText").textContent =
-    game.power;
-
-  document.getElementById("upgradeCost").textContent =
-    game.upgradeCost.toLocaleString();
-
-  document.getElementById("autoCost").textContent =
-    game.autoCost.toLocaleString();
-
-  document.getElementById("itemCount").textContent =
-    game.inventory.length;
-
-  renderInventory();
-
-  saveGame();
-
-}
-
-
-/* =========================
-   SAVE
+   STORAGE
 ========================= */
 
 function saveGame() {
 
   localStorage.setItem(
-    "caseClickerSave",
-    JSON.stringify(game)
+    "balance",
+    balance
+  );
+
+  localStorage.setItem(
+    "inventory",
+    JSON.stringify(inventory)
   );
 
 }
 
 
 /* =========================
-   CLICK
+   NAVIGATION
 ========================= */
 
-function clickCoin(event) {
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
 
-  game.coins += game.power;
-  game.totalClicks++;
+    button.addEventListener("click", () => {
 
-  createFloat(
-    "+" + game.power,
-    event.clientX,
-    event.clientY
-  );
+      goTo(button.dataset.page);
 
-  updateUI();
+    });
+
+  });
+
+
+function goTo(page) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  const target = document.getElementById(page);
+
+  if (target) {
+    target.classList.add("active");
+  }
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(btn => {
+
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page === page
+      );
+
+    });
+
+  if (page === "inventory") {
+    renderInventory();
+  }
+
+  if (page === "upgrade") {
+    renderUpgrade();
+  }
 
 }
 
 
 /* =========================
-   FLOATING TEXT
+   BALANCE
 ========================= */
 
-function createFloat(text, x, y) {
+function updateBalance() {
 
-  const el = document.createElement("div");
-
-  el.className = "float";
-  el.textContent = text;
-
-  el.style.left = x + "px";
-  el.style.top = y + "px";
-
-  document.body.appendChild(el);
-
-  setTimeout(() => el.remove(), 1000);
+  document.getElementById("balance")
+    .textContent =
+    balance.toLocaleString();
 
 }
 
 
 /* =========================
-   UPGRADE
+   CASES
 ========================= */
 
-function buyUpgrade() {
+function renderCases() {
 
-  if (game.coins < game.upgradeCost) {
+  const grid =
+    document.getElementById("caseGrid");
 
-    alert("Du har inte tillräckligt med coins!");
+  grid.innerHTML = "";
+
+  cases.forEach(c => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "case-card";
+
+    div.innerHTML = `
+      <div class="case-image">
+        ${c.icon}
+      </div>
+
+      <div class="case-info">
+
+        <h3>${c.name}</h3>
+
+        <p>
+          Contains ${c.items.length}
+          different items.
+        </p>
+
+        <div class="price">
+          💰 ${c.price.toLocaleString()}
+        </div>
+
+        <button
+          class="btn"
+          onclick="selectCase('${c.id}')"
+        >
+          OPEN
+        </button>
+
+      </div>
+    `;
+
+    grid.appendChild(div);
+
+  });
+
+}
+
+
+function selectCase(id) {
+
+  currentCase =
+    cases.find(c => c.id === id);
+
+  if (!currentCase) return;
+
+  if (balance < currentCase.price) {
+
+    alert("You don't have enough coins.");
 
     return;
 
   }
 
-  game.coins -= game.upgradeCost;
+  document.getElementById(
+    "selectedCase"
+  ).textContent =
+    `${currentCase.name} — ${currentCase.price.toLocaleString()} coins`;
 
-  game.power++;
+  createReel();
 
-  game.upgradeCost =
-    Math.floor(game.upgradeCost * 1.65);
+  document.getElementById(
+    "result"
+  ).classList.remove("show");
 
-  updateUI();
+  document.getElementById(
+    "spinBtn"
+  ).disabled = false;
+
+  goTo("open");
 
 }
 
 
 /* =========================
-   AUTO CLICKER
+   REEL
 ========================= */
 
-function buyAutoClicker() {
+function createReel() {
 
-  if (game.coins < game.autoCost) {
+  const reel =
+    document.getElementById("reel");
 
-    alert("Du har inte tillräckligt med coins!");
+  reel.innerHTML = "";
+
+  const reelItems = [];
+
+  for (let i = 0; i < 35; i++) {
+
+    const id =
+      currentCase.items[
+        Math.floor(
+          Math.random() *
+          currentCase.items.length
+        )
+      ];
+
+    reelItems.push(id);
+
+  }
+
+  reelItems.forEach(id => {
+
+    const item = items[id];
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      `reel-item ${item.rarity}`;
+
+    div.innerHTML = `
+      <div class="emoji">
+        ${item.icon}
+      </div>
+
+      <div class="item-name">
+        ${item.name}
+      </div>
+    `;
+
+    reel.appendChild(div);
+
+  });
+
+  reel.style.transition = "none";
+  reel.style.transform = "translateX(0)";
+
+}
+
+
+/* =========================
+   CASE OPENING
+========================= */
+
+function spinCase() {
+
+  if (!currentCase) return;
+
+  if (balance < currentCase.price) {
+
+    alert("Not enough coins.");
 
     return;
 
   }
 
-  game.coins -= game.autoCost;
+  balance -= currentCase.price;
 
-  game.autoClickers++;
+  updateBalance();
 
-  game.autoCost =
-    Math.floor(game.autoCost * 1.8);
+  saveGame();
 
-  updateUI();
+  const button =
+    document.getElementById("spinBtn");
 
-}
+  button.disabled = true;
 
+  const reel =
+    document.getElementById("reel");
 
-/* Auto coins */
+  /*
+    Weighted-ish selection.
+    Higher tiers are less likely.
+  */
 
-setInterval(() => {
+  const roll = Math.random();
 
-  if (game.autoClickers > 0) {
+  let index;
 
-    game.coins += game.autoClickers;
-
-    updateUI();
-
+  if (roll < 0.55) {
+    index = 0;
   }
-
-}, 1000);
-
-
-/* =========================
-   RANDOM ITEM
-========================= */
-
-function getRandomItem(type = "basic") {
-
-  let roll = Math.random() * 100;
-
-  let rarity;
-
-  if (type === "basic") {
-
-    if (roll < 60) rarity = "common";
-    else if (roll < 85) rarity = "uncommon";
-    else if (roll < 96) rarity = "rare";
-    else if (roll < 99) rarity = "epic";
-    else rarity = "legendary";
-
+  else if (roll < 0.82) {
+    index = 1;
   }
-
-  else if (type === "premium") {
-
-    if (roll < 30) rarity = "common";
-    else if (roll < 60) rarity = "uncommon";
-    else if (roll < 85) rarity = "rare";
-    else if (roll < 97) rarity = "epic";
-    else rarity = "legendary";
-
+  else if (roll < 0.95) {
+    index = 2;
   }
-
   else {
+    index = 3;
+  }
 
-    if (roll < 10) rarity = "common";
-    else if (roll < 30) rarity = "uncommon";
-    else if (roll < 60) rarity = "rare";
-    else if (roll < 85) rarity = "epic";
-    else rarity = "legendary";
+  index =
+    Math.min(
+      index,
+      currentCase.items.length - 1
+    );
+
+  const winningId =
+    currentCase.items[index];
+
+  const winningItem =
+    items[winningId];
+
+  /*
+    Put the winning item around
+    position 27 in the reel.
+  */
+
+  const children =
+    reel.children;
+
+  const winningPosition = 27;
+
+  if (children[winningPosition]) {
+
+    children[winningPosition].className =
+      `reel-item ${winningItem.rarity}`;
+
+    children[winningPosition].innerHTML = `
+      <div class="emoji">
+        ${winningItem.icon}
+      </div>
+
+      <div class="item-name">
+        ${winningItem.name}
+      </div>
+    `;
 
   }
 
-  const possible =
-    items.filter(item => item.rarity === rarity);
+  const itemWidth = 153;
 
-  return possible[
-    Math.floor(Math.random() * possible.length)
-  ];
-
-}
-
-
-/* =========================
-   OPEN CASE
-========================= */
-
-function openCase(cost, type) {
-
-  if (game.coins < cost) {
-
-    alert("Du har inte tillräckligt med coins!");
-
-    return;
-
-  }
-
-  game.coins -= cost;
-
-  const item = getRandomItem(type);
-
-  game.inventory.push(item);
-
-  showResult(item);
-
-  updateUI();
-
-}
-
-
-/* =========================
-   RESULT
-========================= */
-
-function showResult(item) {
-
-  document.getElementById("resultIcon")
-    .textContent = item.icon;
-
-  document.getElementById("resultName")
-    .textContent = item.name;
-
-  const rarity =
-    document.getElementById("resultRarity");
-
-  rarity.textContent =
-    item.rarity.toUpperCase();
-
-  rarity.className =
-    "item-rarity " + item.rarity;
-
-  document.getElementById("resultOverlay")
-    .classList.add("show");
-
-}
-
-
-function closeResult() {
-
-  document.getElementById("resultOverlay")
-    .classList.remove("show");
-
-}
-
-
-/* =========================
-   SPIN
-========================= */
-
-let spinning = false;
-
-function spin() {
-
-  const cost = 250;
-
-  if (spinning) return;
-
-  if (game.coins < cost) {
-
-    alert("Du har inte tillräckligt med coins!");
-
-    return;
-
-  }
-
-  spinning = true;
-
-  game.coins -= cost;
-
-  const wheel =
-    document.getElementById("wheel");
-
-  const turns =
-    5 + Math.floor(Math.random() * 4);
-
-  const degrees =
-    turns * 360 +
-    Math.floor(Math.random() * 360);
-
-  wheel.style.transform =
-    `rotate(${degrees}deg)`;
-
-  document.getElementById("spinButton")
-    .disabled = true;
+  const target =
+    -(
+      winningPosition * itemWidth
+      -
+      500
+      +
+      itemWidth / 2
+    );
 
   setTimeout(() => {
 
-    const item = getRandomItem("premium");
+    reel.style.transition =
+      "transform 4s cubic-bezier(.12,.8,.18,1)";
 
-    game.inventory.push(item);
+    reel.style.transform =
+      `translateX(${target}px)`;
 
-    showResult(item);
+  }, 50);
 
-    spinning = false;
 
-    document.getElementById("spinButton")
-      .disabled = false;
+  setTimeout(() => {
 
-    updateUI();
+    inventory.push(winningId);
 
-  }, 2600);
+    saveGame();
+
+    showResult(winningItem);
+
+    button.disabled = false;
+
+  }, 4300);
+
+}
+
+
+function showResult(item) {
+
+  document.getElementById(
+    "resultIcon"
+  ).textContent =
+    item.icon;
+
+  document.getElementById(
+    "resultName"
+  ).textContent =
+    item.name;
+
+  document.getElementById(
+    "resultRarity"
+  ).textContent =
+    `${item.rarity.toUpperCase()} ${item.type} • Value ${item.value.toLocaleString()} coins`;
+
+  document
+    .getElementById("result")
+    .classList.add("show");
 
 }
 
@@ -998,95 +1112,1812 @@ function spin() {
 
 function renderInventory() {
 
-  const container =
-    document.getElementById("inventory");
+  const grid =
+    document.getElementById(
+      "inventoryGrid"
+    );
 
-  if (game.inventory.length === 0) {
+  grid.innerHTML = "";
 
-    container.innerHTML = `
-      <div class="empty">
-        🎒<br><br>
-        Ditt inventory är tomt.<br>
-        Öppna ett case för att få ditt första item!
-      </div>
-    `;
+  if (inventory.length === 0) {
+
+    grid.innerHTML =
+      `<div class="empty">
+        Your inventory is empty.
+      </div>`;
 
     return;
 
   }
 
-  container.innerHTML =
-    game.inventory.map(item => `
+  inventory.forEach((id, index) => {
 
-      <div class="item">
+    const item = items[id];
 
-        <div class="item-icon">
-          ${item.icon}
-        </div>
+    if (!item) return;
 
-        <div class="item-name">
-          ${item.name}
-        </div>
+    const card =
+      document.createElement("div");
 
-        <div class="item-rarity ${item.rarity}">
-          ${item.rarity.toUpperCase()}
-        </div>
+    card.className =
+      `inventory-card ${item.rarity}`;
 
+    card.innerHTML = `
+
+      <div class="icon">
+        ${item.icon}
       </div>
 
-    `).join("");
+      <h3>${item.name}</h3>
+
+      <p>
+        ${item.type}
+      </p>
+
+      <p style="color:#ffd15c;margin-top:7px">
+        ${item.value.toLocaleString()} coins
+      </p>
+
+      <button
+        class="sell"
+        onclick="sellItem(${index})"
+      >
+        Sell for ${item.value.toLocaleString()}
+      </button>
+
+    `;
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+
+function sellItem(index) {
+
+  const id =
+    inventory[index];
+
+  const item =
+    items[id];
+
+  if (!item) return;
+
+  balance += item.value;
+
+  inventory.splice(index, 1);
+
+  saveGame();
+
+  updateBalance();
+
+  renderInventory();
 
 }
 
 
 /* =========================
-   TABS
+   UPGRADE
 ========================= */
 
-function showPage(page, button) {
+function renderUpgrade() {
 
-  document
-    .querySelectorAll(".page")
-    .forEach(p => p.classList.remove("active"));
+  const select =
+    document.getElementById(
+      "upgradeSelect"
+    );
 
-  document
-    .querySelectorAll(".tab")
-    .forEach(b => b.classList.remove("active"));
+  select.innerHTML = "";
 
-  document
-    .getElementById(page)
-    .classList.add("active");
+  if (inventory.length === 0) {
 
-  button.classList.add("active");
+    select.innerHTML =
+      `<option>No items available</option>`;
+
+    return;
+
+  }
+
+  inventory.forEach((id, index) => {
+
+    const item = items[id];
+
+    const option =
+      document.createElement("option");
+
+    option.value = index;
+
+    option.textContent =
+      `${item.name} — ${item.value.toLocaleString()} coins`;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function upgradeItem() {
+
+  if (inventory.length === 0) {
+
+    alert("You need an item first.");
+
+    return;
+
+  }
+
+  const select =
+    document.getElementById(
+      "upgradeSelect"
+    );
+
+  const index =
+    Number(select.value);
+
+  const oldId =
+    inventory[index];
+
+  const oldItem =
+    items[oldId];
+
+  /*
+    Find items worth more than
+    the selected item.
+  */
+
+  const better =
+    Object.keys(items)
+      .filter(id =>
+        items[id].value > oldItem.value
+      );
+
+  if (better.length === 0) {
+
+    alert("That item is already at the top tier.");
+
+    return;
+
+  }
+
+  /*
+    55% success.
+    This uses only fictional
+    in-game items and coins.
+  */
+
+  const success =
+    Math.random() < 0.55;
+
+  const output =
+    document.getElementById(
+      "upgradeResult"
+    );
+
+  if (success) {
+
+    /*
+      Pick a better item.
+    */
+
+    const newId =
+      better[
+        Math.floor(
+          Math.random() *
+          better.length
+        )
+      ];
+
+    inventory[index] =
+      newId;
+
+    const newItem =
+      items[newId];
+
+    output.innerHTML = `
+      <div style="font-size:60px">
+        ${newItem.icon}
+      </div>
+
+      <h2>Upgrade successful!</h2>
+
+      <p>
+        You received
+        <strong>${newItem.name}</strong>
+      </p>
+    `;
+
+  } else {
+
+    /*
+      Failed upgrade returns
+      the original item.
+    */
+
+    output.innerHTML = `
+      <div style="font-size:55px">
+        💨
+      </div>
+
+      <h2>Upgrade failed</h2>
+
+      <p>
+        Your ${oldItem.name} was returned.
+      </p>
+    `;
+
+  }
+
+  saveGame();
+
+  renderUpgrade();
 
 }
 
 
 /* =========================
-   RESET
+   ADMIN
 ========================= */
+
+function loginAdmin() {
+
+  const code =
+    document.getElementById(
+      "adminCode"
+    ).value;
+
+  const message =
+    document.getElementById(
+      "adminMessage"
+    );
+
+  if (code === ADMIN_CODE) {
+
+    document
+      .getElementById(
+        "adminPanel"
+      )
+      .classList.add("show");
+
+    message.textContent =
+      "Owner access granted.";
+
+  } else {
+
+    message.textContent =
+      "Incorrect owner code.";
+
+  }
+
+}
+
+
+function giveMoney() {
+
+  const amount =
+    Number(
+      document.getElementById(
+        "moneyAmount"
+      ).value
+    );
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    alert("Enter a valid amount.");
+
+    return;
+
+  }
+
+  balance += amount;
+
+  updateBalance();
+
+  saveGame();
+
+  alert(
+    `${amount.toLocaleString()} coins added.`
+  );
+
+}
+
 
 function resetGame() {
 
-  if (!confirm(
-    "Är du säker? All progress kommer att raderas."
-  )) return;
+  if (
+    !confirm(
+      "Reset your local game?"
+    )
+  ) return;
 
-  localStorage.removeItem("caseClickerSave");
+  balance = 10000;
+  inventory = [];
 
-  location.reload();
+  saveGame();
+
+  updateBalance();
+
+  renderInventory();
+
+  renderUpgrade();
 
 }
 
 
 /* =========================
-   START
+   START GAME
 ========================= */
 
-updateUI();
+renderCases();
+updateBalance();
 
 </script>
 
 </body>
 </html>
-```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseStrike — Case Opening Game</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top, #202735 0%, #0b0e14 45%, #07090d 100%);
+  color: #fff;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+}
+
+header {
+  height: 70px;
+  background: rgba(10, 13, 19, .95);
+  border-bottom: 1px solid #303744;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: #ffb300;
+}
+
+.balance {
+  background: #171c25;
+  border: 1px solid #343c4a;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #ffd15c;
+  font-weight: bold;
+}
+
+nav {
+  background: #11151c;
+  border-bottom: 1px solid #292f3a;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+}
+
+nav button {
+  background: transparent;
+  border: 0;
+  color: #aeb6c4;
+  padding: 12px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+nav button:hover,
+nav button.active {
+  background: #252c37;
+  color: white;
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 20px 70px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.hero {
+  text-align: center;
+  padding: 25px 10px 35px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #9ca6b6;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+}
+
+.case-card {
+  background: linear-gradient(145deg, #181e28, #10141b);
+  border: 1px solid #303846;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: .2s;
+}
+
+.case-card:hover {
+  transform: translateY(-4px);
+  border-color: #ffb300;
+}
+
+.case-image {
+  height: 155px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle, #384457 0%, #151a22 70%);
+  font-size: 65px;
+}
+
+.case-info {
+  padding: 16px;
+}
+
+.case-info h3 {
+  margin-bottom: 7px;
+}
+
+.case-info p {
+  color: #8792a3;
+  font-size: 14px;
+  margin-bottom: 13px;
+}
+
+.price {
+  color: #ffd15c;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.btn {
+  width: 100%;
+  border: 0;
+  padding: 11px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #111;
+  background: #ffb300;
+}
+
+.btn:hover {
+  background: #ffc43d;
+}
+
+.btn.secondary {
+  background: #303846;
+  color: white;
+}
+
+.btn.danger {
+  background: #c94545;
+  color: white;
+}
+
+.open-area {
+  text-align: center;
+}
+
+.selected-case {
+  margin-bottom: 20px;
+  color: #ffd15c;
+}
+
+.reel-wrapper {
+  position: relative;
+  overflow: hidden;
+  max-width: 1000px;
+  margin: 20px auto;
+  border: 2px solid #414b5c;
+  border-radius: 10px;
+  background: #0e1218;
+}
+
+.pointer {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: #ffb300;
+  box-shadow: 0 0 15px #ffb300;
+}
+
+.reel {
+  display: flex;
+  gap: 8px;
+  padding: 15px;
+  transform: translateX(0);
+}
+
+.reel-item {
+  min-width: 145px;
+  height: 135px;
+  border-radius: 8px;
+  background: #191f29;
+  border: 1px solid #394352;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.reel-item .emoji {
+  font-size: 45px;
+}
+
+.item-name {
+  font-size: 12px;
+  text-align: center;
+}
+
+.common { border-bottom: 3px solid #b5b5b5; }
+.uncommon { border-bottom: 3px solid #42a5f5; }
+.rare { border-bottom: 3px solid #ab6cff; }
+.epic { border-bottom: 3px solid #e83cff; }
+.legendary { border-bottom: 3px solid #ffb300; }
+
+.result {
+  display: none;
+  margin: 25px auto;
+  max-width: 400px;
+  padding: 25px;
+  background: #171d27;
+  border: 1px solid #3b4555;
+  border-radius: 12px;
+}
+
+.result.show {
+  display: block;
+}
+
+.result .big-icon {
+  font-size: 90px;
+  margin: 10px;
+}
+
+.result h2 {
+  margin-bottom: 8px;
+}
+
+.inventory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.inventory-card {
+  background: #171d26;
+  border: 1px solid #303846;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+}
+
+.inventory-card .icon {
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+.inventory-card .sell {
+  margin-top: 12px;
+  padding: 9px;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #303846;
+  color: white;
+}
+
+.upgrade {
+  max-width: 650px;
+  margin: auto;
+  background: #151a22;
+  border: 1px solid #303846;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.upgrade select {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  background: #0e1218;
+  color: white;
+  border: 1px solid #3a4350;
+  border-radius: 7px;
+}
+
+.upgrade-result {
+  text-align: center;
+  margin-top: 20px;
+  min-height: 100px;
+}
+
+.admin {
+  max-width: 600px;
+  margin: auto;
+  background: #151a22;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #343d4b;
+}
+
+.admin input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: #0c1016;
+  color: white;
+  border: 1px solid #3a4350;
+  border-radius: 7px;
+}
+
+.admin-panel {
+  display: none;
+  margin-top: 20px;
+}
+
+.admin-panel.show {
+  display: block;
+}
+
+.admin-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-row input {
+  margin: 0;
+}
+
+.message {
+  margin-top: 12px;
+  color: #ffcf58;
+}
+
+.empty {
+  text-align: center;
+  padding: 50px;
+  color: #7f8998;
+}
+
+@media(max-width: 650px) {
+  header {
+    padding: 0 15px;
+  }
+
+  nav {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  nav button {
+    white-space: nowrap;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">CASE<span>STRIKE</span></div>
+  <div class="balance">💰 <span id="balance">10,000</span></div>
+</header>
+
+<nav>
+  <button class="nav-btn active" data-page="play">Play</button>
+  <button class="nav-btn" data-page="inventory">Inventory</button>
+  <button class="nav-btn" data-page="upgrade">Upgrade</button>
+  <button class="nav-btn" data-page="admin">Owner</button>
+</nav>
+
+<main>
+
+<!-- PLAY -->
+<section id="play" class="page active">
+
+  <div class="hero">
+    <h1>Open Cases</h1>
+    <p>Collect fictional weapons, knives and skins using in-game coins.</p>
+  </div>
+
+  <div class="case-grid" id="caseGrid"></div>
+
+</section>
+
+<!-- OPEN -->
+<section id="open" class="page">
+
+  <div class="hero">
+    <h1>Case Opening</h1>
+    <p class="selected-case" id="selectedCase"></p>
+  </div>
+
+  <div class="open-area">
+
+    <div class="reel-wrapper">
+      <div class="pointer"></div>
+      <div class="reel" id="reel"></div>
+    </div>
+
+    <button class="btn" id="spinBtn" onclick="spinCase()">
+      OPEN CASE
+    </button>
+
+    <div class="result" id="result">
+      <div class="big-icon" id="resultIcon"></div>
+      <h2 id="resultName"></h2>
+      <p id="resultRarity"></p>
+      <br>
+      <button class="btn secondary" onclick="goTo('inventory')">
+        VIEW INVENTORY
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- INVENTORY -->
+<section id="inventory" class="page">
+
+  <div class="hero">
+    <h1>Your Inventory</h1>
+    <p>Items you have collected.</p>
+  </div>
+
+  <div class="inventory" id="inventoryGrid"></div>
+
+</section>
+
+<!-- UPGRADE -->
+<section id="upgrade" class="page">
+
+  <div class="hero">
+    <h1>Weapon Upgrade</h1>
+    <p>Trade an item for a chance at a higher-tier fictional item.</p>
+  </div>
+
+  <div class="upgrade">
+
+    <label>Select an item:</label>
+
+    <select id="upgradeSelect"></select>
+
+    <button class="btn" onclick="upgradeItem()">
+      TRY UPGRADE
+    </button>
+
+    <div class="upgrade-result" id="upgradeResult"></div>
+
+  </div>
+
+</section>
+
+<!-- ADMIN -->
+<section id="admin" class="page">
+
+  <div class="hero">
+    <h1>Owner Panel</h1>
+    <p>Owner controls for your game.</p>
+  </div>
+
+  <div class="admin">
+
+    <h2>Admin Login</h2>
+
+    <input
+      type="password"
+      id="adminCode"
+      placeholder="Enter owner code"
+    >
+
+    <button class="btn" onclick="loginAdmin()">
+      ENTER
+    </button>
+
+    <div id="adminMessage" class="message"></div>
+
+    <div id="adminPanel" class="admin-panel">
+
+      <hr style="border-color:#303846;margin:20px 0">
+
+      <h2>Game Controls</h2>
+
+      <div class="admin-row">
+        <input
+          type="number"
+          id="moneyAmount"
+          placeholder="Coins"
+        >
+        <button class="btn" onclick="giveMoney()">
+          Add Coins
+        </button>
+      </div>
+
+      <button
+        class="btn secondary"
+        onclick="resetGame()"
+      >
+        Reset Game
+      </button>
+
+      <p class="message">
+        Owner mode unlocked.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<script>
+
+/* =========================
+   GAME DATA
+========================= */
+
+const ADMIN_CODE = "Adminmelle123";
+
+let balance = Number(localStorage.getItem("balance")) || 10000;
+
+let inventory =
+  JSON.parse(localStorage.getItem("inventory")) || [];
+
+let currentCase = null;
+
+
+/*
+  Fictional cases.
+  You can replace the emoji with your own image URLs later.
+*/
+
+const cases = [
+  {
+    id: "starter",
+    name: "Starter Case",
+    price: 500,
+    icon: "📦",
+    items: ["ember", "shadow", "frost", "nova"]
+  },
+
+  {
+    id: "urban",
+    name: "Urban Case",
+    price: 1000,
+    icon: "🧰",
+    items: ["shadow", "viper", "phantom", "crimson"]
+  },
+
+  {
+    id: "elite",
+    name: "Elite Case",
+    price: 2000,
+    icon: "💼",
+    items: ["viper", "phantom", "crimson", "royal"]
+  },
+
+  {
+    id: "night",
+    name: "Night Ops Case",
+    price: 3500,
+    icon: "🗃️",
+    items: ["phantom", "crimson", "royal", "void"]
+  },
+
+  {
+    id: "dragon",
+    name: "Dragon Case",
+    price: 5000,
+    icon: "🐉",
+    items: ["crimson", "royal", "void", "dragon"]
+  },
+
+  {
+    id: "legend",
+    name: "Legend Case",
+    price: 7500,
+    icon: "👑",
+    items: ["royal", "void", "dragon", "solar"]
+  }
+];
+
+
+/*
+  Fictional weapons/items.
+*/
+
+const items = {
+
+  ember: {
+    name: "Ember Fang",
+    type: "Knife",
+    rarity: "common",
+    value: 350,
+    icon: "🔪"
+  },
+
+  shadow: {
+    name: "Shadow Strike",
+    type: "Pistol",
+    rarity: "common",
+    value: 600,
+    icon: "🔫"
+  },
+
+  frost: {
+    name: "Frostbite SMG",
+    type: "SMG",
+    rarity: "uncommon",
+    value: 900,
+    icon: "❄️"
+  },
+
+  nova: {
+    name: "Nova Burst",
+    type: "Rifle",
+    rarity: "uncommon",
+    value: 1200,
+    icon: "💥"
+  },
+
+  viper: {
+    name: "Viper Edge",
+    type: "Knife",
+    rarity: "rare",
+    value: 1800,
+    icon: "🔪"
+  },
+
+  phantom: {
+    name: "Phantom Rifle",
+    type: "Rifle",
+    rarity: "rare",
+    value: 2500,
+    icon: "🎯"
+  },
+
+  crimson: {
+    name: "Crimson Talon",
+    type: "Knife",
+    rarity: "epic",
+    value: 4000,
+    icon: "🗡️"
+  },
+
+  royal: {
+    name: "Royal Specter",
+    type: "Knife",
+    rarity: "epic",
+    value: 6500,
+    icon: "⚔️"
+  },
+
+  void: {
+    name: "Void Reaper",
+    type: "Knife",
+    rarity: "legendary",
+    value: 10000,
+    icon: "🌑"
+  },
+
+  dragon: {
+    name: "Dragon Fang",
+    type: "Knife",
+    rarity: "legendary",
+    value: 15000,
+    icon: "🐲"
+  },
+
+  solar: {
+    name: "Solar Crown",
+    type: "Knife",
+    rarity: "legendary",
+    value: 25000,
+    icon: "☀️"
+  }
+
+};
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function saveGame() {
+
+  localStorage.setItem(
+    "balance",
+    balance
+  );
+
+  localStorage.setItem(
+    "inventory",
+    JSON.stringify(inventory)
+  );
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      goTo(button.dataset.page);
+
+    });
+
+  });
+
+
+function goTo(page) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  const target = document.getElementById(page);
+
+  if (target) {
+    target.classList.add("active");
+  }
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(btn => {
+
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page === page
+      );
+
+    });
+
+  if (page === "inventory") {
+    renderInventory();
+  }
+
+  if (page === "upgrade") {
+    renderUpgrade();
+  }
+
+}
+
+
+/* =========================
+   BALANCE
+========================= */
+
+function updateBalance() {
+
+  document.getElementById("balance")
+    .textContent =
+    balance.toLocaleString();
+
+}
+
+
+/* =========================
+   CASES
+========================= */
+
+function renderCases() {
+
+  const grid =
+    document.getElementById("caseGrid");
+
+  grid.innerHTML = "";
+
+  cases.forEach(c => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "case-card";
+
+    div.innerHTML = `
+      <div class="case-image">
+        ${c.icon}
+      </div>
+
+      <div class="case-info">
+
+        <h3>${c.name}</h3>
+
+        <p>
+          Contains ${c.items.length}
+          different items.
+        </p>
+
+        <div class="price">
+          💰 ${c.price.toLocaleString()}
+        </div>
+
+        <button
+          class="btn"
+          onclick="selectCase('${c.id}')"
+        >
+          OPEN
+        </button>
+
+      </div>
+    `;
+
+    grid.appendChild(div);
+
+  });
+
+}
+
+
+function selectCase(id) {
+
+  currentCase =
+    cases.find(c => c.id === id);
+
+  if (!currentCase) return;
+
+  if (balance < currentCase.price) {
+
+    alert("You don't have enough coins.");
+
+    return;
+
+  }
+
+  document.getElementById(
+    "selectedCase"
+  ).textContent =
+    `${currentCase.name} — ${currentCase.price.toLocaleString()} coins`;
+
+  createReel();
+
+  document.getElementById(
+    "result"
+  ).classList.remove("show");
+
+  document.getElementById(
+    "spinBtn"
+  ).disabled = false;
+
+  goTo("open");
+
+}
+
+
+/* =========================
+   REEL
+========================= */
+
+function createReel() {
+
+  const reel =
+    document.getElementById("reel");
+
+  reel.innerHTML = "";
+
+  const reelItems = [];
+
+  for (let i = 0; i < 35; i++) {
+
+    const id =
+      currentCase.items[
+        Math.floor(
+          Math.random() *
+          currentCase.items.length
+        )
+      ];
+
+    reelItems.push(id);
+
+  }
+
+  reelItems.forEach(id => {
+
+    const item = items[id];
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      `reel-item ${item.rarity}`;
+
+    div.innerHTML = `
+      <div class="emoji">
+        ${item.icon}
+      </div>
+
+      <div class="item-name">
+        ${item.name}
+      </div>
+    `;
+
+    reel.appendChild(div);
+
+  });
+
+  reel.style.transition = "none";
+  reel.style.transform = "translateX(0)";
+
+}
+
+
+/* =========================
+   CASE OPENING
+========================= */
+
+function spinCase() {
+
+  if (!currentCase) return;
+
+  if (balance < currentCase.price) {
+
+    alert("Not enough coins.");
+
+    return;
+
+  }
+
+  balance -= currentCase.price;
+
+  updateBalance();
+
+  saveGame();
+
+  const button =
+    document.getElementById("spinBtn");
+
+  button.disabled = true;
+
+  const reel =
+    document.getElementById("reel");
+
+  /*
+    Weighted-ish selection.
+    Higher tiers are less likely.
+  */
+
+  const roll = Math.random();
+
+  let index;
+
+  if (roll < 0.55) {
+    index = 0;
+  }
+  else if (roll < 0.82) {
+    index = 1;
+  }
+  else if (roll < 0.95) {
+    index = 2;
+  }
+  else {
+    index = 3;
+  }
+
+  index =
+    Math.min(
+      index,
+      currentCase.items.length - 1
+    );
+
+  const winningId =
+    currentCase.items[index];
+
+  const winningItem =
+    items[winningId];
+
+  /*
+    Put the winning item around
+    position 27 in the reel.
+  */
+
+  const children =
+    reel.children;
+
+  const winningPosition = 27;
+
+  if (children[winningPosition]) {
+
+    children[winningPosition].className =
+      `reel-item ${winningItem.rarity}`;
+
+    children[winningPosition].innerHTML = `
+      <div class="emoji">
+        ${winningItem.icon}
+      </div>
+
+      <div class="item-name">
+        ${winningItem.name}
+      </div>
+    `;
+
+  }
+
+  const itemWidth = 153;
+
+  const target =
+    -(
+      winningPosition * itemWidth
+      -
+      500
+      +
+      itemWidth / 2
+    );
+
+  setTimeout(() => {
+
+    reel.style.transition =
+      "transform 4s cubic-bezier(.12,.8,.18,1)";
+
+    reel.style.transform =
+      `translateX(${target}px)`;
+
+  }, 50);
+
+
+  setTimeout(() => {
+
+    inventory.push(winningId);
+
+    saveGame();
+
+    showResult(winningItem);
+
+    button.disabled = false;
+
+  }, 4300);
+
+}
+
+
+function showResult(item) {
+
+  document.getElementById(
+    "resultIcon"
+  ).textContent =
+    item.icon;
+
+  document.getElementById(
+    "resultName"
+  ).textContent =
+    item.name;
+
+  document.getElementById(
+    "resultRarity"
+  ).textContent =
+    `${item.rarity.toUpperCase()} ${item.type} • Value ${item.value.toLocaleString()} coins`;
+
+  document
+    .getElementById("result")
+    .classList.add("show");
+
+}
+
+
+/* =========================
+   INVENTORY
+========================= */
+
+function renderInventory() {
+
+  const grid =
+    document.getElementById(
+      "inventoryGrid"
+    );
+
+  grid.innerHTML = "";
+
+  if (inventory.length === 0) {
+
+    grid.innerHTML =
+      `<div class="empty">
+        Your inventory is empty.
+      </div>`;
+
+    return;
+
+  }
+
+  inventory.forEach((id, index) => {
+
+    const item = items[id];
+
+    if (!item) return;
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      `inventory-card ${item.rarity}`;
+
+    card.innerHTML = `
+
+      <div class="icon">
+        ${item.icon}
+      </div>
+
+      <h3>${item.name}</h3>
+
+      <p>
+        ${item.type}
+      </p>
+
+      <p style="color:#ffd15c;margin-top:7px">
+        ${item.value.toLocaleString()} coins
+      </p>
+
+      <button
+        class="sell"
+        onclick="sellItem(${index})"
+      >
+        Sell for ${item.value.toLocaleString()}
+      </button>
+
+    `;
+
+    grid.appendChild(card);
+
+  });
+
+}
+
+
+function sellItem(index) {
+
+  const id =
+    inventory[index];
+
+  const item =
+    items[id];
+
+  if (!item) return;
+
+  balance += item.value;
+
+  inventory.splice(index, 1);
+
+  saveGame();
+
+  updateBalance();
+
+  renderInventory();
+
+}
+
+
+/* =========================
+   UPGRADE
+========================= */
+
+function renderUpgrade() {
+
+  const select =
+    document.getElementById(
+      "upgradeSelect"
+    );
+
+  select.innerHTML = "";
+
+  if (inventory.length === 0) {
+
+    select.innerHTML =
+      `<option>No items available</option>`;
+
+    return;
+
+  }
+
+  inventory.forEach((id, index) => {
+
+    const item = items[id];
+
+    const option =
+      document.createElement("option");
+
+    option.value = index;
+
+    option.textContent =
+      `${item.name} — ${item.value.toLocaleString()} coins`;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function upgradeItem() {
+
+  if (inventory.length === 0) {
+
+    alert("You need an item first.");
+
+    return;
+
+  }
+
+  const select =
+    document.getElementById(
+      "upgradeSelect"
+    );
+
+  const index =
+    Number(select.value);
+
+  const oldId =
+    inventory[index];
+
+  const oldItem =
+    items[oldId];
+
+  /*
+    Find items worth more than
+    the selected item.
+  */
+
+  const better =
+    Object.keys(items)
+      .filter(id =>
+        items[id].value > oldItem.value
+      );
+
+  if (better.length === 0) {
+
+    alert("That item is already at the top tier.");
+
+    return;
+
+  }
+
+  /*
+    55% success.
+    This uses only fictional
+    in-game items and coins.
+  */
+
+  const success =
+    Math.random() < 0.55;
+
+  const output =
+    document.getElementById(
+      "upgradeResult"
+    );
+
+  if (success) {
+
+    /*
+      Pick a better item.
+    */
+
+    const newId =
+      better[
+        Math.floor(
+          Math.random() *
+          better.length
+        )
+      ];
+
+    inventory[index] =
+      newId;
+
+    const newItem =
+      items[newId];
+
+    output.innerHTML = `
+      <div style="font-size:60px">
+        ${newItem.icon}
+      </div>
+
+      <h2>Upgrade successful!</h2>
+
+      <p>
+        You received
+        <strong>${newItem.name}</strong>
+      </p>
+    `;
+
+  } else {
+
+    /*
+      Failed upgrade returns
+      the original item.
+    */
+
+    output.innerHTML = `
+      <div style="font-size:55px">
+        💨
+      </div>
+
+      <h2>Upgrade failed</h2>
+
+      <p>
+        Your ${oldItem.name} was returned.
+      </p>
+    `;
+
+  }
+
+  saveGame();
+
+  renderUpgrade();
+
+}
+
+
+/* =========================
+   ADMIN
+========================= */
+
+function loginAdmin() {
+
+  const code =
+    document.getElementById(
+      "adminCode"
+    ).value;
+
+  const message =
+    document.getElementById(
+      "adminMessage"
+    );
+
+  if (code === ADMIN_CODE) {
+
+    document
+      .getElementById(
+        "adminPanel"
+      )
+      .classList.add("show");
+
+    message.textContent =
+      "Owner access granted.";
+
+  } else {
+
+    message.textContent =
+      "Incorrect owner code.";
+
+  }
+
+}
+
+
+function giveMoney() {
+
+  const amount =
+    Number(
+      document.getElementById(
+        "moneyAmount"
+      ).value
+    );
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    alert("Enter a valid amount.");
+
+    return;
+
+  }
+
+  balance += amount;
+
+  updateBalance();
+
+  saveGame();
+
+  alert(
+    `${amount.toLocaleString()} coins added.`
+  );
+
+}
+
+
+function resetGame() {
+
+  if (
+    !confirm(
+      "Reset your local game?"
+    )
+  ) return;
+
+  balance = 10000;
+  inventory = [];
+
+  saveGame();
+
+  updateBalance();
+
+  renderInventory();
+
+  renderUpgrade();
+
+}
+
+
+/* =========================
+   START GAME
+========================= */
+
+renderCases();
+updateBalance();
+
+</script>
+
+</body>
+</html>
+
