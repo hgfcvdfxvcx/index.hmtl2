@@ -3,588 +3,351 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CaseVault</title>
+<title>CASEFORGE</title>
 
 <style>
-*{box-sizing:border-box}
-
-:root{
-  --bg:#070a0f;
-  --panel:#0f141c;
-  --panel2:#151b24;
-  --border:#252e3a;
-  --text:#f4f7fb;
-  --muted:#8b96a7;
-  --orange:#f59e0b;
-  --green:#22c55e;
-  --red:#ef4444;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 70% -10%,rgba(245,158,11,.12),transparent 35%),
-    #070a0f;
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#080b10;
+    color:#eee;
+    min-height:100vh;
 }
-
-button,input,select{font:inherit}
-
-button{cursor:pointer}
-
-.app{
-  min-height:100vh;
-  display:flex;
+button{
+    border:0;
+    cursor:pointer;
+    color:#fff;
 }
+.app{display:flex;min-height:100vh}
 
+/* SIDEBAR */
 .sidebar{
-  width:235px;
-  position:fixed;
-  inset:0 auto 0 0;
-  background:#090c11;
-  border-right:1px solid var(--border);
-  padding:22px 14px;
-  z-index:10;
+    width:230px;
+    background:#0d1118;
+    border-right:1px solid #202733;
+    padding:20px 14px;
+    position:fixed;
+    left:0;top:0;bottom:0;
 }
-
 .logo{
-  font-size:24px;
-  font-weight:900;
-  padding:7px 10px 28px;
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:2px;
+    padding:8px 10px 25px;
 }
-
-.logo span{color:var(--orange)}
-
-.nav-title{
-  color:#566171;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:1px;
-  margin:18px 10px 7px;
-  text-transform:uppercase;
+.logo span{color:#e5a62b}
+.nav-btn{
+    width:100%;
+    background:transparent;
+    text-align:left;
+    padding:13px 14px;
+    margin:3px 0;
+    border-radius:6px;
+    color:#929aa8;
+    font-size:14px;
 }
-
-.nav button{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#909aaa;
-  text-align:left;
-  padding:12px;
-  border-radius:8px;
-  margin:2px 0;
+.nav-btn:hover,.nav-btn.active{
+    background:#181e27;
+    color:#fff;
 }
-
-.nav button:hover,
-.nav button.active{
-  background:#171d26;
-  color:#fff;
-}
+.nav-btn.active{border-left:3px solid #e5a62b}
 
 .main{
-  margin-left:235px;
-  width:calc(100% - 235px);
+    margin-left:230px;
+    width:calc(100% - 230px);
 }
-
 .topbar{
-  height:70px;
-  position:sticky;
-  top:0;
-  z-index:5;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 28px;
-  background:rgba(7,10,15,.88);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(12px);
+    height:70px;
+    border-bottom:1px solid #202733;
+    background:#0c1016;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding:0 28px;
+    gap:12px;
 }
-
 .balance{
-  background:#121923;
-  border:1px solid #2a3543;
-  padding:10px 15px;
-  border-radius:8px;
-  font-weight:900;
+    background:#151b24;
+    border:1px solid #28303c;
+    padding:10px 16px;
+    border-radius:5px;
+    font-weight:bold;
 }
+.balance span{color:#e5a62b}
 
-.balance span{color:var(--orange)}
-
-.content{
-  max-width:1450px;
-  margin:auto;
-  padding:28px;
-}
-
-.page{display:none}
+.page{display:none;padding:28px}
 .page.active{display:block}
 
-.hero{
-  border:1px solid var(--border);
-  background:
-    linear-gradient(100deg,rgba(245,158,11,.11),transparent 45%),
-    linear-gradient(135deg,#121923,#0c1118);
-  border-radius:13px;
-  padding:28px;
-  margin-bottom:25px;
-}
-
-.hero h1{
-  margin:0 0 8px;
-  font-size:32px;
-}
-
-.hero p{
-  margin:0;
-  color:var(--muted);
-}
+h1{font-size:28px;margin-bottom:7px}
+.subtitle{color:#737c89;margin-bottom:25px}
 
 /* CASES */
-
 .case-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:16px;
 }
-
 .case{
-  overflow:hidden;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:11px;
-  transition:.2s;
+    background:#10151d;
+    border:1px solid #242c38;
+    border-radius:7px;
+    padding:17px;
+    transition:.2s;
 }
-
 .case:hover{
-  transform:translateY(-4px);
-  border-color:#4b5666;
+    transform:translateY(-3px);
+    border-color:#a67828;
 }
-
-.case-art{
-  height:150px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-  background:
-    radial-gradient(circle at 50% 45%,#364151,transparent 45%),
-    linear-gradient(135deg,#161e29,#080b10);
+.case-img{
+    height:135px;
+    background:linear-gradient(145deg,#1a202a,#090c11);
+    border:1px solid #303844;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:52px;
+    margin-bottom:14px;
+    border-radius:4px;
 }
-
-.case-box{
-  width:125px;
-  height:78px;
-  border:1px solid #697586;
-  border-radius:7px;
-  transform:rotate(-7deg);
-  background:linear-gradient(145deg,#303947,#11161d);
-  box-shadow:0 20px 40px #000;
+.case-name{font-weight:bold;margin-bottom:6px}
+.case-price{color:#e5a62b;font-size:14px;margin-bottom:12px}
+.open-btn{
+    width:100%;
+    padding:10px;
+    background:#b27c20;
+    border-radius:4px;
+    font-weight:bold;
 }
+.open-btn:hover{background:#d39425}
 
-.case-label{
-  position:absolute;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:2px;
-  color:#d9e0e9;
+/* ITEMS */
+.item-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:15px;
 }
-
-.case-body{padding:15px}
-
-.case-name{
-  font-weight:900;
-  font-size:16px;
+.item{
+    background:#11161e;
+    border:1px solid #252d38;
+    border-radius:6px;
+    overflow:hidden;
 }
-
-.case-price{
-  margin-top:5px;
-  color:var(--orange);
-  font-size:13px;
+.item-visual{
+    height:125px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:46px;
+    background:linear-gradient(145deg,#171d26,#090c11);
 }
-
-.btn{
-  border:0;
-  border-radius:7px;
-  padding:11px 16px;
-  font-weight:900;
-}
-
-.btn-orange{
-  background:var(--orange);
-  color:#151515;
-}
-
-.btn-green{
-  background:#16a34a;
-  color:white;
-}
-
-.btn-red{
-  background:#b91c1c;
-  color:white;
-}
-
-.btn-dark{
-  background:#202936;
-  color:white;
-}
-
-.full{
-  width:100%;
-  margin-top:12px;
-}
-
-/* INVENTORY */
-
-.skin-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(225px,1fr));
-  gap:15px;
-}
-
-.skin-card{
-  overflow:hidden;
-  border:1px solid var(--border);
-  border-bottom:3px solid var(--rarity);
-  border-radius:10px;
-  background:var(--panel);
-}
-
-.skin-art{
-  height:135px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:
-    radial-gradient(circle,#242e3b,transparent 55%),
-    #0b1016;
-}
-
-.weapon{
-  width:170px;
-  height:22px;
-  border-radius:4px;
-  transform:rotate(-9deg);
-  position:relative;
-  box-shadow:0 12px 30px #000;
-}
-
-.weapon:before{
-  content:"";
-  position:absolute;
-  width:42px;
-  height:10px;
-  left:30px;
-  top:6px;
-  background:rgba(255,255,255,.22);
-  border-radius:3px;
-}
-
-.weapon:after{
-  content:"";
-  position:absolute;
-  width:18px;
-  height:43px;
-  right:22px;
-  top:-8px;
-  background:#15191f;
-  border-radius:4px;
-}
-
-.weapon.knife{
-  width:150px;
-  height:10px;
-  border-radius:100%;
-  transform:rotate(-19deg);
-}
-
-.skin-info{padding:14px}
-
-.skin-name{
-  font-weight:900;
-}
-
-.weapon-name{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:4px;
-}
-
-.rarity{
-  color:var(--rarity);
-  text-transform:uppercase;
-  font-size:10px;
-  font-weight:900;
-  margin-top:9px;
-}
-
-.skin-value{
-  color:var(--orange);
-  margin-top:5px;
-}
-
-/* RARITY */
-
-.common{--rarity:#9ca3af}
-.uncommon{--rarity:#22c55e}
-.rare{--rarity:#3b82f6}
-.epic{--rarity:#a855f7}
-.legendary{--rarity:#f97316}
-.mythic{--rarity:#ef4444}
-
-/* PANELS */
-
-.panel{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:22px;
-  margin-bottom:20px;
-}
-
-.panel h2{margin-top:0}
-
-/* CLICKER */
-
-.clicker{
-  min-height:430px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
-.big-coin{
-  width:210px;
-  height:210px;
-  border-radius:50%;
-  border:11px solid #875508;
-  background:
-    radial-gradient(circle at 35% 28%,#ffe28a,#dc920f 55%,#704207);
-  box-shadow:
-    inset 0 0 30px #704207,
-    0 20px 50px #000;
-  color:#4b2d00;
-  font-size:45px;
-  font-weight:900;
-  transition:.08s;
-}
-
-.big-coin:active{transform:scale(.94)}
-
-.stats{
-  display:flex;
-  gap:25px;
-  margin-top:25px;
-  color:var(--muted);
-}
-
-.stats b{color:white}
-
-/* ROULETTE */
-
-.roulette-window{
-  overflow:hidden;
-  position:relative;
-  height:130px;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#080c11;
-}
-
-.pointer{
-  position:absolute;
-  left:50%;
-  top:0;
-  bottom:0;
-  width:3px;
-  transform:translateX(-50%);
-  background:var(--orange);
-  z-index:2;
-}
-
-.reel{
-  display:flex;
-  gap:10px;
-  height:100%;
-  transform:translateX(0);
-}
-
-.reel-card{
-  min-width:170px;
-  height:105px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  border:1px solid var(--border);
-  border-radius:7px;
-  background:#141b24;
-  border-bottom:3px solid var(--rarity);
-  font-size:13px;
-  font-weight:900;
-}
-
-.reel-card small{
-  color:var(--muted);
-  margin-top:5px;
-}
-
-/* FLIP */
-
-.flip-area{text-align:center}
-
-.flip-coin{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  margin:30px auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(145deg,#ffe08a,#a96805);
-  border:9px solid #754807;
-  color:#402800;
-  font-size:26px;
-  font-weight:900;
-  transition:transform 1s;
-}
-
-.flip-coin.spinning{
-  transform:rotateY(1080deg);
-}
-
-/* FORM */
-
-input,select{
-  width:100%;
-  padding:12px;
-  margin:7px 0;
-  color:white;
-  background:#090e14;
-  border:1px solid #303a48;
-  border-radius:7px;
-  outline:none;
-}
-
-input:focus,select:focus{
-  border-color:#697789;
-}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-
-hr{
-  border:0;
-  border-top:1px solid var(--border);
-  margin:25px 0;
-}
-
-.log{
-  max-height:230px;
-  overflow:auto;
-  background:#090d12;
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:12px;
-  color:#9aa5b5;
-  font-size:13px;
-}
-
-.log div{
-  padding:5px 0;
-  border-bottom:1px solid #151b23;
-}
+.item-info{padding:13px}
+.item-name{font-weight:bold;margin-bottom:5px}
+.rarity{font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.common{color:#aaa}
+.uncommon{color:#61d27b}
+.rare{color:#4ca4ff}
+.epic{color:#bd70ff}
+.legendary{color:#ff9f32}
+.mythic{color:#ff4d61}
 
 /* MODAL */
-
 .modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.82);
-  z-index:100;
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.82);
+    z-index:20;
+    align-items:center;
+    justify-content:center;
 }
-
 .modal.show{display:flex}
-
 .modal-box{
-  width:min(600px,92vw);
-  text-align:center;
-  padding:25px;
-  background:#111720;
-  border:1px solid #303a48;
-  border-radius:14px;
+    width:min(650px,92%);
+    background:#10151d;
+    border:1px solid #303946;
+    border-radius:8px;
+    padding:25px;
+}
+.close{
+    float:right;
+    background:#252b34;
+    padding:6px 10px;
+    border-radius:4px;
+}
+.result{
+    text-align:center;
+    padding:30px;
+}
+.result-icon{font-size:90px;margin:15px}
+.result-name{font-size:24px;font-weight:bold}
+
+/* CLICKER */
+.clicker-wrap{text-align:center;padding-top:20px}
+.coin-display{
+    font-size:45px;
+    font-weight:bold;
+    margin:25px;
+    color:#e5a62b;
+}
+.clicker{
+    width:220px;height:220px;
+    border-radius:50%;
+    background:radial-gradient(circle,#e4a62d 0,#a56e16 65%,#58390d 100%);
+    box-shadow:0 0 45px rgba(229,166,43,.18);
+    font-size:30px;
+    font-weight:bold;
+}
+.clicker:active{transform:scale(.96)}
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+.stat{
+    background:#11161e;
+    border:1px solid #252d38;
+    padding:15px 25px;
+    border-radius:5px;
 }
 
-.win-card{
-  margin:20px auto;
-  padding:25px;
-  max-width:420px;
-  border:1px solid var(--rarity);
-  border-bottom:4px solid var(--rarity);
-  border-radius:10px;
-  background:#090e14;
+/* ROULETTE */
+.roulette{
+    overflow:hidden;
+    border:1px solid #303744;
+    background:#0b0e13;
+    border-radius:6px;
+}
+.reel{
+    display:flex;
+    gap:10px;
+    padding:15px;
+    transition:transform 4s cubic-bezier(.08,.7,.12,1);
+}
+.reel-item{
+    min-width:170px;
+    height:130px;
+    background:#151b23;
+    border:1px solid #303844;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+.pointer{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    height:160px;
+    border-left:3px solid #e5a62b;
+    pointer-events:none;
+}
+.roulette-wrap{position:relative;margin:25px 0}
+.action{
+    background:#b27c20;
+    padding:12px 25px;
+    border-radius:4px;
+    font-weight:bold;
+}
+.action:hover{background:#d39425}
+
+/* COINFLIP */
+.flip-area{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    align-items:center;
+    margin:45px 0;
+}
+.big-coin{
+    width:150px;height:150px;
+    border-radius:50%;
+    background:#d79a27;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:bold;
 }
 
-.win-art{
-  height:100px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+/* UPGRADE */
+.upgrade-box{
+    max-width:800px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 100px 1fr;
+    gap:20px;
+    align-items:center;
 }
+.select-box{
+    min-height:230px;
+    background:#11161e;
+    border:1px solid #29313c;
+    border-radius:7px;
+    padding:20px;
+    text-align:center;
+}
+.select-box .big{font-size:65px;margin:25px}
+.arrow{font-size:40px;color:#e5a62b}
+
+/* OWNER */
+.owner-box{
+    max-width:800px;
+    background:#11161e;
+    border:1px solid #29313c;
+    padding:25px;
+    border-radius:7px;
+}
+.input{
+    width:100%;
+    background:#090d12;
+    color:white;
+    border:1px solid #303744;
+    padding:12px;
+    margin:7px 0 12px;
+    border-radius:4px;
+}
+.owner-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+.owner-actions button{
+    padding:12px;
+    background:#252d38;
+    border-radius:4px;
+}
+.owner-actions button:hover{background:#333d4b}
+.danger{background:#7d3030!important}
+
+/* PLAYERS */
+.player-list{
+    margin-top:25px;
+    display:grid;
+    gap:10px;
+}
+.player{
+    background:#0c1117;
+    border:1px solid #252d38;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.player small{color:#727b88}
 
 /* MOBILE */
-
-@media(max-width:850px){
-
-  .sidebar{
-    width:68px;
-    padding:15px 7px;
-  }
-
-  .logo{
-    font-size:0;
-    text-align:center;
-  }
-
-  .logo span{font-size:20px}
-
-  .nav button{
-    text-align:center;
-    font-size:0;
-  }
-
-  .nav button:first-letter{
-    font-size:18px;
-  }
-
-  .main{
-    margin-left:68px;
-    width:calc(100% - 68px);
-  }
-
-  .content{padding:17px}
-
-  .topbar{padding:0 15px}
-
-  .hero h1{font-size:27px}
-
-  .form-grid{grid-template-columns:1fr}
-
-  .stats{
-    flex-direction:column;
-    gap:8px;
-    text-align:center;
-  }
+@media(max-width:750px){
+    .sidebar{width:65px;padding:10px 6px}
+    .logo{font-size:0;text-align:center}
+    .logo span{font-size:20px}
+    .nav-btn{font-size:0;text-align:center;padding:15px 4px}
+    .nav-btn:first-letter{font-size:18px}
+    .main{margin-left:65px;width:calc(100% - 65px)}
+    .page{padding:18px}
+    .upgrade-box{grid-template-columns:1fr}
+    .arrow{transform:rotate(90deg);text-align:center}
 }
 </style>
 </head>
@@ -594,1367 +357,788 @@ hr{
 <div class="app">
 
 <aside class="sidebar">
+    <div class="logo">CASE<span>FORGE</span></div>
 
-  <div class="logo">CASE<span>VAULT</span></div>
-
-  <div class="nav-title">Game</div>
-
-  <div class="nav">
-    <button class="active" data-page="cases">📦 Cases</button>
-    <button data-page="inventory">🎒 Inventory</button>
-    <button data-page="clicker">🖱️ Clicker</button>
-    <button data-page="roulette">🎰 Roulette</button>
-    <button data-page="coinflip">🪙 Coin Flip</button>
-    <button data-page="upgrade">⬆️ Upgrade</button>
-  </div>
-
-  <div class="nav-title">Admin</div>
-
-  <div class="nav">
-    <button data-page="owner">⚙️ Owner</button>
-  </div>
-
+    <button class="nav-btn active" onclick="showPage('cases',this)">▣ Cases</button>
+    <button class="nav-btn" onclick="showPage('inventory',this)">◈ Inventory</button>
+    <button class="nav-btn" onclick="showPage('clicker',this)">◉ Clicker</button>
+    <button class="nav-btn" onclick="showPage('roulette',this)">◎ Roulette</button>
+    <button class="nav-btn" onclick="showPage('coinflip',this)">● Coin Flip</button>
+    <button class="nav-btn" onclick="showPage('upgrade',this)">◆ Upgrade</button>
+    <button class="nav-btn" onclick="showPage('owner',this)">⚙ Owner</button>
 </aside>
 
 <main class="main">
 
 <header class="topbar">
-  <div>Virtual Case Opening</div>
-
-  <div class="balance">
-    🪙 <span id="balance">1000</span>
-  </div>
+    <div class="balance">Coins: <span id="balance">0</span></div>
 </header>
 
-<div class="content">
-
 <!-- CASES -->
-
 <section id="cases" class="page active">
-
-  <div class="hero">
     <h1>Cases</h1>
-    <p>Öppna cases och bygg ditt virtuella inventory.</p>
-  </div>
-
-  <div id="caseGrid" class="case-grid"></div>
-
+    <p class="subtitle">Öppna virtuella cases och samla items.</p>
+    <div id="caseGrid" class="case-grid"></div>
 </section>
 
 <!-- INVENTORY -->
-
 <section id="inventory" class="page">
-
-  <div class="hero">
     <h1>Inventory</h1>
-    <p>Alla dina virtuella skins.</p>
-  </div>
-
-  <div id="inventoryGrid" class="skin-grid"></div>
-
+    <p class="subtitle">Dina insamlade items.</p>
+    <div id="inventoryGrid" class="item-grid"></div>
 </section>
 
 <!-- CLICKER -->
-
 <section id="clicker" class="page">
+    <h1>Clicker</h1>
+    <p class="subtitle">Tjäna virtuella coins.</p>
 
-  <div class="hero">
-    <h1>Coin Clicker</h1>
-    <p>Klicka på myntet för virtuella coins.</p>
-  </div>
+    <div class="clicker-wrap">
+        <div class="coin-display">
+            <span id="clickerCoins">0</span>
+        </div>
 
-  <div class="panel clicker">
+        <button class="clicker" onclick="clickCoin()">CLICK</button>
 
-    <button id="clickButton" class="big-coin">+</button>
-
-    <div class="stats">
-      <div>Per click: <b id="clickPower">1</b></div>
-      <div>Level: <b id="clickLevel">1</b></div>
-      <div>XP: <b id="clickXp">0</b>/100</div>
+        <div class="stats">
+            <div class="stat">Per click: <b id="perClick">1</b></div>
+            <div class="stat">Clicks: <b id="clickCount">0</b></div>
+        </div>
     </div>
-
-    <br>
-
-    <button id="clickUpgrade" class="btn btn-orange">
-      Upgrade Click — <span id="clickCost">100</span>
-    </button>
-
-    <button id="luckUpgrade" class="btn btn-dark" style="margin-top:10px">
-      Upgrade Luck — <span id="luckCost">250</span>
-    </button>
-
-  </div>
-
 </section>
 
 <!-- ROULETTE -->
-
 <section id="roulette" class="page">
-
-  <div class="hero">
     <h1>Roulette</h1>
-    <p>Snurra för ett virtuellt skin.</p>
-  </div>
+    <p class="subtitle">Virtuell item roulette.</p>
 
-  <div class="panel">
-
-    <div class="roulette-window">
-      <div class="pointer"></div>
-      <div id="reel" class="reel"></div>
+    <div class="roulette-wrap">
+        <div class="pointer"></div>
+        <div class="roulette">
+            <div id="reel" class="reel"></div>
+        </div>
     </div>
 
-    <br>
-
-    <button id="rouletteButton" class="btn btn-orange">
-      SPIN — 300 COINS
-    </button>
-
-  </div>
-
+    <button class="action" onclick="spinRoulette()">SPIN — 100 COINS</button>
 </section>
 
 <!-- COIN FLIP -->
-
 <section id="coinflip" class="page">
-
-  <div class="hero">
     <h1>Coin Flip</h1>
-    <p>Välj HEADS eller TAILS och få ett virtuellt skin om du vinner.</p>
-  </div>
+    <p class="subtitle">Välj sida på den virtuella myntkastningen.</p>
 
-  <div class="panel flip-area">
+    <div class="flip-area">
+        <div>
+            <button class="action" onclick="coinFlip('heads')">HEADS</button>
+        </div>
 
-    <div id="flipCoin" class="flip-coin">?</div>
+        <div id="flipCoin" class="big-coin">COIN</div>
 
-    <button class="btn btn-orange flip-button" data-side="HEADS">
-      HEADS
-    </button>
+        <div>
+            <button class="action" onclick="coinFlip('tails')">TAILS</button>
+        </div>
+    </div>
 
-    <button class="btn btn-dark flip-button" data-side="TAILS">
-      TAILS
-    </button>
-
-    <p id="flipResult"></p>
-
-  </div>
-
+    <div id="flipResult" style="text-align:center;color:#929aa8"></div>
 </section>
 
 <!-- UPGRADE -->
-
 <section id="upgrade" class="page">
-
-  <div class="hero">
     <h1>Upgrade</h1>
-    <p>Lämna in ett virtuellt skin och försök få ett bättre.</p>
-  </div>
+    <p class="subtitle">Försök uppgradera ett item till ett värdefullare virtuellt item.</p>
 
-  <div class="panel">
+    <div class="upgrade-box">
+        <div class="select-box">
+            <div>DITT ITEM</div>
+            <div id="upgradeFromIcon" class="big">?</div>
+            <div id="upgradeFrom">Välj från inventory</div>
+        </div>
 
-    <select id="upgradeSelect"></select>
+        <div class="arrow">→</div>
 
-    <button id="upgradeButton" class="btn btn-green">
-      UPGRADE — 55%
-    </button>
+        <div class="select-box">
+            <div>MÅL</div>
+            <div id="upgradeToIcon" class="big">?</div>
+            <div id="upgradeTo">Random target</div>
+        </div>
+    </div>
 
-    <p id="upgradeResult"></p>
-
-  </div>
-
+    <div style="text-align:center;margin-top:25px">
+        <button class="action" onclick="doUpgrade()">UPGRADE</button>
+    </div>
 </section>
 
 <!-- OWNER -->
-
 <section id="owner" class="page">
-
-  <div class="hero">
     <h1>Owner Panel</h1>
-    <p>Demo-administration för det virtuella spelet.</p>
-  </div>
+    <p class="subtitle">Administration av den lokala demon.</p>
 
-  <div id="ownerLoginBox" class="panel">
+    <div id="ownerLogin">
+        <div class="owner-box">
+            <h3>Owner Login</h3>
+            <input id="ownerCode" class="input" type="password" placeholder="Owner code">
+            <button class="action" onclick="loginOwner()">LOGIN</button>
+            <p id="ownerError" style="color:#e05b5b;margin-top:12px"></p>
+        </div>
+    </div>
 
-    <h2>Owner Login</h2>
+    <div id="ownerPanel" style="display:none">
 
-    <input
-      id="ownerCode"
-      type="password"
-      placeholder="Owner code"
-    >
+        <div class="owner-box">
+            <h3>Give Coins</h3>
 
-    <button id="ownerLoginButton" class="btn btn-orange">
-      Login
-    </button>
+            <input id="targetPlayer" class="input" placeholder="Player name">
+            <input id="coinAmount" class="input" type="number" placeholder="Amount">
 
-    <p id="ownerMessage"></p>
-
-  </div>
-
-  <div id="ownerPanel" style="display:none">
-
-    <div class="panel">
-
-      <h2>Ge coins</h2>
-
-      <div class="form-grid">
-
-        <div>
-          <label>Spelare</label>
-          <input id="targetPlayer" placeholder="player123">
+            <div class="owner-actions">
+                <button onclick="giveCoins('player')">Give to player</button>
+                <button onclick="giveCoins('self')">Give to myself</button>
+            </div>
         </div>
 
-        <div>
-          <label>Antal coins</label>
-          <input id="giveCoinsAmount" type="number" min="1">
+        <br>
+
+        <div class="owner-box">
+            <h3>Give Skin</h3>
+
+            <input id="skinPlayer" class="input" placeholder="Player name">
+
+            <select id="skinSelect" class="input"></select>
+
+            <div class="owner-actions">
+                <button onclick="giveSkin('player')">Give skin to player</button>
+                <button onclick="giveSkin('self')">Give skin to myself</button>
+            </div>
         </div>
 
-      </div>
+        <br>
 
-      <button id="giveCoinsButton" class="btn btn-orange">
-        Give Coins
-      </button>
+        <div class="owner-box">
+            <h3>Demo Players</h3>
+            <div id="playerList" class="player-list"></div>
+        </div>
 
-      <button id="selfCoinsButton" class="btn btn-dark">
-        Give Coins To Myself
-      </button>
+        <br>
 
-    </div>
-
-    <div class="panel">
-
-      <h2>Ge skin</h2>
-
-      <select id="ownerSkin"></select>
-
-      <br>
-
-      <button id="giveSkinButton" class="btn btn-green">
-        Give To Player
-      </button>
-
-      <button id="selfSkinButton" class="btn btn-dark">
-        Give To Myself
-      </button>
+        <div class="owner-box">
+            <button class="owner-actions danger" onclick="resetGame()">
+                RESET LOCAL DATA
+            </button>
+        </div>
 
     </div>
-
-    <div class="panel">
-
-      <h2>Admin Log</h2>
-
-      <div id="adminLog" class="log"></div>
-
-    </div>
-
-  </div>
-
 </section>
 
-</div>
 </main>
 </div>
 
-<!-- WIN MODAL -->
+<!-- CASE MODAL -->
+<div id="caseModal" class="modal">
+    <div class="modal-box">
+        <button class="close" onclick="closeModal()">X</button>
 
-<div id="modal" class="modal">
-
-  <div class="modal-box">
-
-    <h2>You received</h2>
-
-    <div id="winContent"></div>
-
-    <button id="closeModal" class="btn btn-orange">
-      Continue
-    </button>
-
-  </div>
-
+        <div class="result">
+            <h2>CASE OPENED</h2>
+            <div id="resultIcon" class="result-icon">🔫</div>
+            <div id="resultName" class="result-name">Item</div>
+            <div id="resultRarity" class="rarity"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-"use strict";
+/* =========================
+   DATA
+========================= */
 
-/*
-  CASEVAULT
-  Virtual-only demo.
-  No eval()
-  No new Function()
-*/
-
-/* ==============================
-   SKINS
-============================== */
-
-const SKINS = [
-  ["AK-47 | Crimson Grid","AK-47","rare",180],
-  ["AK-47 | Nightline","AK-47","epic",420],
-  ["AK-47 | Steel Web","AK-47","uncommon",95],
-  ["AK-47 | Red Circuit","AK-47","legendary",850],
-
-  ["M4A1-S | Blackline","M4A1-S","rare",220],
-  ["M4A1-S | Arctic Mesh","M4A1-S","epic",510],
-  ["M4A1-S | Carbon","M4A1-S","uncommon",110],
-  ["M4A1-S | Royal Edge","M4A1-S","legendary",920],
-
-  ["M4A4 | Urban Strike","M4A4","rare",190],
-  ["M4A4 | Phantom","M4A4","epic",480],
-  ["M4A4 | Blue Steel","M4A4","uncommon",105],
-
-  ["AWP | Frostline","AWP","epic",650],
-  ["AWP | Black Scope","AWP","rare",280],
-  ["AWP | Red Mist","AWP","legendary",1100],
-  ["AWP | Glacier","AWP","mythic",2400],
-
-  ["Glock-18 | Carbon","Glock-18","uncommon",75],
-  ["Glock-18 | Redline","Glock-18","rare",150],
-  ["Glock-18 | Neon Grid","Glock-18","epic",360],
-
-  ["USP-S | Night Ops","USP-S","rare",170],
-  ["USP-S | Whiteout","USP-S","epic",390],
-  ["USP-S | Crimson","USP-S","legendary",760],
-
-  ["Desert Eagle | Iron","Desert Eagle","uncommon",90],
-  ["Desert Eagle | Blaze Grid","Desert Eagle","epic",440],
-  ["Desert Eagle | Golden Circuit","Desert Eagle","legendary",1200],
-
-  ["MP9 | Urban Camo","MP9","common",35],
-  ["MP9 | Neon","MP9","rare",130],
-  ["MP9 | Carbon Fiber","MP9","epic",300],
-
-  ["P90 | Storm","P90","uncommon",80],
-  ["P90 | Circuit","P90","rare",165],
-
-  ["UMP-45 | Blackout","UMP-45","common",30],
-  ["UMP-45 | Red Mesh","UMP-45","rare",125],
-
-  ["FAMAS | Grey Matter","FAMAS","common",32],
-  ["FAMAS | Night Grid","FAMAS","rare",145],
-
-  ["Galil AR | Desert","Galil AR","common",28],
-  ["Galil AR | Crimson","Galil AR","rare",135],
-
-  ["Five-SeveN | Steel","Five-SeveN","uncommon",65],
-  ["Five-SeveN | Violet","Five-SeveN","epic",310],
-
-  ["P250 | Urban","P250","common",25],
-  ["P250 | Red Circuit","P250","rare",120],
-
-  ["CZ75-Auto | Dark","CZ75-Auto","uncommon",60],
-  ["CZ75-Auto | Neon","CZ75-Auto","epic",290],
-
-  ["Karambit | Shadow Edge","Karambit","legendary",3500],
-  ["Karambit | Crimson Edge","Karambit","mythic",6000],
-
-  ["Butterfly Knife | Night","Butterfly Knife","legendary",4200],
-  ["Butterfly Knife | Aurora","Butterfly Knife","mythic",7500],
-
-  ["M9 Bayonet | Black","M9 Bayonet","legendary",3900],
-  ["M9 Bayonet | Red Edge","M9 Bayonet","mythic",6800],
-
-  ["Huntsman Knife | Steel","Huntsman Knife","epic",900],
-  ["Huntsman Knife | Crimson","Huntsman Knife","legendary",2500],
-
-  ["Falchion Knife | Night","Falchion Knife","epic",700],
-  ["Falchion Knife | Redline","Falchion Knife","legendary",2100],
-
-  ["Bowie Knife | Carbon","Bowie Knife","epic",800],
-  ["Bowie Knife | Blood Edge","Bowie Knife","legendary",2300],
-
-  ["Shadow Daggers | Steel","Shadow Daggers","epic",650],
-  ["Shadow Daggers | Crimson","Shadow Daggers","legendary",1900],
-
-  ["Gut Knife | Night","Gut Knife","epic",550],
-  ["Gut Knife | Red Edge","Gut Knife","legendary",1600]
+const cases = [
+    {name:"Alpha Case",price:100},
+    {name:"Urban Case",price:150},
+    {name:"Frost Case",price:200},
+    {name:"Neon Case",price:250},
+    {name:"Shadow Case",price:300},
+    {name:"Elite Case",price:400},
+    {name:"Inferno Case",price:500},
+    {name:"Dragon Case",price:650},
+    {name:"Royal Case",price:800},
+    {name:"Void Case",price:1000},
+    {name:"Mythic Case",price:1500},
+    {name:"Omega Case",price:2500}
 ];
 
-/* ==============================
-   CASES
-============================== */
+const skins = [
+    {name:"Carbon Vector",weapon:"Rifle",rarity:"common",value:35,icon:"🔫"},
+    {name:"Dustline",weapon:"Pistol",rarity:"common",value:40,icon:"🔫"},
+    {name:"Steel Grid",weapon:"SMG",rarity:"common",value:45,icon:"🔫"},
+    {name:"Night Alloy",weapon:"Rifle",rarity:"common",value:50,icon:"🔫"},
+    {name:"Concrete Fade",weapon:"Pistol",rarity:"common",value:55,icon:"🔫"},
 
-const CASES = [
-  ["Weapon Case",120],
-  ["Weapon Case 2",180],
-  ["Weapon Case 3",260],
-  ["Huntsman Case",350],
-  ["Knife Case",600],
-  ["Premium Case",900],
-  ["Rare Case",1200],
-  ["Elite Case",1700],
-  ["Special Case",2400],
-  ["Legendary Case",3500],
-  ["Knife & Weapon Case",5000],
-  ["Ultimate Case",7500]
+    {name:"Arctic Circuit",weapon:"Rifle",rarity:"uncommon",value:80,icon:"🔫"},
+    {name:"Urban Pulse",weapon:"SMG",rarity:"uncommon",value:90,icon:"🔫"},
+    {name:"Copper Strike",weapon:"Pistol",rarity:"uncommon",value:100,icon:"🔫"},
+    {name:"Blue Sector",weapon:"Rifle",rarity:"uncommon",value:110,icon:"🔫"},
+    {name:"Blackline",weapon:"SMG",rarity:"uncommon",value:120,icon:"🔫"},
+
+    {name:"Crimson Vector",weapon:"Rifle",rarity:"rare",value:180,icon:"🔫"},
+    {name:"Polar Storm",weapon:"Rifle",rarity:"rare",value:200,icon:"🔫"},
+    {name:"Phantom Mesh",weapon:"SMG",rarity:"rare",value:220,icon:"🔫"},
+    {name:"Toxic Circuit",weapon:"Pistol",rarity:"rare",value:240,icon:"🔫"},
+    {name:"Royal Blue",weapon:"Rifle",rarity:"rare",value:260,icon:"🔫"},
+    {name:"Desert Chrome",weapon:"Pistol",rarity:"rare",value:280,icon:"🔫"},
+
+    {name:"Voltage",weapon:"Rifle",rarity:"epic",value:400,icon:"🔫"},
+    {name:"Deep Space",weapon:"Rifle",rarity:"epic",value:450,icon:"🔫"},
+    {name:"Blood Circuit",weapon:"SMG",rarity:"epic",value:500,icon:"🔫"},
+    {name:"Cyber Glass",weapon:"Pistol",rarity:"epic",value:550,icon:"🔫"},
+    {name:"Obsidian Flame",weapon:"Rifle",rarity:"epic",value:600,icon:"🔫"},
+
+    {name:"Solar Edge",weapon:"Rifle",rarity:"legendary",value:900,icon:"🔫"},
+    {name:"Golden Storm",weapon:"Pistol",rarity:"legendary",value:1000,icon:"🔫"},
+    {name:"Inferno Core",weapon:"Rifle",rarity:"legendary",value:1200,icon:"🔫"},
+    {name:"Neon Dragon",weapon:"SMG",rarity:"legendary",value:1400,icon:"🔫"},
+    {name:"Royal Eclipse",weapon:"Rifle",rarity:"legendary",value:1600,icon:"🔫"},
+
+    {name:"Void Fang",weapon:"Knife",rarity:"mythic",value:3000,icon:"🔪"},
+    {name:"Crimson Talon",weapon:"Knife",rarity:"mythic",value:3500,icon:"🔪"},
+    {name:"Frost Shard",weapon:"Knife",rarity:"mythic",value:4000,icon:"🔪"},
+    {name:"Obsidian Fang",weapon:"Knife",rarity:"mythic",value:4500,icon:"🔪"},
+    {name:"Solar Relic",weapon:"Knife",rarity:"mythic",value:5000,icon:"🔪"},
+    {name:"Omega Edge",weapon:"Knife",rarity:"mythic",value:7500,icon:"🔪"}
 ];
 
-/* ==============================
-   STATE
-============================== */
+const rarityWeights = [
+    {rarity:"common",weight:50},
+    {rarity:"uncommon",weight:27},
+    {rarity:"rare",weight:14},
+    {rarity:"epic",weight:6},
+    {rarity:"legendary",weight:2.5},
+    {rarity:"mythic",weight:.5}
+];
 
-const DEFAULT_STATE = {
-  balance:1000,
-  inventory:[],
-  clickPower:1,
-  clickLevel:1,
-  clickXp:0,
-  luck:0,
-  adminLogs:[],
-  owner:false
+let state = JSON.parse(localStorage.getItem("caseforge_state")) || {
+    coins:5000,
+    inventory:[],
+    clicks:0,
+    perClick:1,
+    players:{
+        Alex:{coins:1000,inventory:[]},
+        Robin:{coins:500,inventory:[]},
+        Max:{coins:2500,inventory:[]}
+    }
 };
 
-function loadState(){
-  try{
-    const saved=localStorage.getItem("casevault_state");
+/* =========================
+   SAVE / UI
+========================= */
 
-    if(!saved){
-      return {...DEFAULT_STATE};
-    }
-
-    const parsed=JSON.parse(saved);
-
-    return {
-      ...DEFAULT_STATE,
-      ...parsed,
-      inventory:Array.isArray(parsed.inventory)
-        ? parsed.inventory
-        : [],
-      adminLogs:Array.isArray(parsed.adminLogs)
-        ? parsed.adminLogs
-        : []
-    };
-
-  }catch(error){
-    console.error("State load error:",error);
-    return {...DEFAULT_STATE};
-  }
+function save(){
+    localStorage.setItem("caseforge_state",JSON.stringify(state));
 }
-
-let state=loadState();
-
-function saveState(){
-  localStorage.setItem(
-    "casevault_state",
-    JSON.stringify(state)
-  );
-
-  updateUI();
-}
-
-/* ==============================
-   HELPERS
-============================== */
-
-function randomNumber(max){
-  return Math.floor(Math.random()*max);
-}
-
-function createItem(skin){
-  return {
-    id:
-      Date.now().toString(36)+
-      Math.random().toString(36).slice(2),
-
-    name:skin[0],
-    weapon:skin[1],
-    rarity:skin[2],
-    value:skin[3]
-  };
-}
-
-function addSkin(skin){
-  state.inventory.push(createItem(skin));
-}
-
-function skinStyle(skin){
-  const colors={
-    common:"background:linear-gradient(90deg,#66717d,#b5bdc8)",
-    uncommon:"background:linear-gradient(90deg,#15803d,#4ade80)",
-    rare:"background:linear-gradient(90deg,#1d4ed8,#60a5fa)",
-    epic:"background:linear-gradient(90deg,#6d28d9,#c084fc)",
-    legendary:"background:linear-gradient(90deg,#c2410c,#fb923c)",
-    mythic:"background:linear-gradient(90deg,#991b1b,#f87171)"
-  };
-
-  return colors[skin.rarity] || colors.common;
-}
-
-function randomSkin(minValue=0){
-
-  let pool=SKINS.filter(
-    skin=>skin[3]>=minValue
-  );
-
-  if(pool.length===0){
-    pool=SKINS;
-  }
-
-  let roll=Math.random();
-
-  if(state.luck>0){
-    roll-=Math.min(state.luck*.015,.15);
-  }
-
-  let rarity;
-
-  if(roll<.45){
-    rarity="common";
-  }else if(roll<.72){
-    rarity="uncommon";
-  }else if(roll<.91){
-    rarity="rare";
-  }else if(roll<.975){
-    rarity="epic";
-  }else if(roll<.997){
-    rarity="legendary";
-  }else{
-    rarity="mythic";
-  }
-
-  let rarityPool=pool.filter(
-    skin=>skin[2]===rarity
-  );
-
-  if(rarityPool.length===0){
-    rarityPool=pool;
-  }
-
-  return rarityPool[
-    randomNumber(rarityPool.length)
-  ];
-}
-
-/* ==============================
-   NAVIGATION
-============================== */
-
-document.querySelectorAll(".nav button").forEach(button=>{
-
-  button.addEventListener("click",()=>{
-
-    const page=button.dataset.page;
-
-    document.querySelectorAll(".page")
-      .forEach(section=>{
-        section.classList.remove("active");
-      });
-
-    const target=document.getElementById(page);
-
-    if(target){
-      target.classList.add("active");
-    }
-
-    document.querySelectorAll(".nav button")
-      .forEach(btn=>{
-        btn.classList.remove("active");
-      });
-
-    button.classList.add("active");
-
-    if(page==="inventory"){
-      renderInventory();
-    }
-
-    if(page==="upgrade"){
-      renderUpgradeSelect();
-    }
-  });
-
-});
-
-/* ==============================
-   UI
-============================== */
 
 function updateUI(){
+    document.getElementById("balance").textContent=Math.floor(state.coins);
+    document.getElementById("clickerCoins").textContent=Math.floor(state.coins);
+    document.getElementById("clickCount").textContent=state.clicks;
+    document.getElementById("perClick").textContent=state.perClick;
 
-  document.getElementById("balance").textContent=
-    Math.floor(state.balance);
-
-  document.getElementById("clickPower").textContent=
-    state.clickPower;
-
-  document.getElementById("clickLevel").textContent=
-    state.clickLevel;
-
-  document.getElementById("clickXp").textContent=
-    state.clickXp;
-
-  document.getElementById("clickCost").textContent=
-    state.clickLevel*100;
-
-  document.getElementById("luckCost").textContent=
-    (state.luck+1)*250;
+    renderInventory();
+    renderPlayers();
 }
 
-/* ==============================
-   CASE RENDER
-============================== */
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(id,btn){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+}
+
+/* =========================
+   CASES
+========================= */
 
 function renderCases(){
+    const grid=document.getElementById("caseGrid");
+    grid.innerHTML="";
 
-  const grid=document.getElementById("caseGrid");
+    cases.forEach((c,index)=>{
+        const div=document.createElement("div");
+        div.className="case";
 
-  grid.innerHTML="";
+        div.innerHTML=`
+            <div class="case-img">📦</div>
+            <div class="case-name">${c.name}</div>
+            <div class="case-price">${c.price} coins</div>
+            <button class="open-btn" onclick="openCase(${index})">OPEN CASE</button>
+        `;
 
-  CASES.forEach((currentCase,index)=>{
-
-    const card=document.createElement("div");
-
-    card.className="case";
-
-    card.innerHTML=`
-      <div class="case-art">
-        <div class="case-box"></div>
-        <div class="case-label">CASE</div>
-      </div>
-
-      <div class="case-body">
-        <div class="case-name">
-          ${currentCase[0]}
-        </div>
-
-        <div class="case-price">
-          🪙 ${currentCase[1]}
-        </div>
-
-        <button
-          class="btn btn-orange full"
-          data-case-index="${index}">
-          OPEN CASE
-        </button>
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
-
-  grid.querySelectorAll("[data-case-index]")
-    .forEach(button=>{
-
-      button.addEventListener("click",()=>{
-
-        openCase(
-          Number(button.dataset.caseIndex)
-        );
-
-      });
-
+        grid.appendChild(div);
     });
 }
 
-/* ==============================
-   CASE OPEN
-============================== */
+function weightedRarity(){
+    let total=rarityWeights.reduce((a,b)=>a+b.weight,0);
+    let random=Math.random()*total;
+
+    for(const r of rarityWeights){
+        random-=r.weight;
+        if(random<=0) return r.rarity;
+    }
+
+    return "common";
+}
+
+function getRandomSkin(){
+    const rarity=weightedRarity();
+    const pool=skins.filter(s=>s.rarity===rarity);
+
+    return pool[Math.floor(Math.random()*pool.length)];
+}
 
 function openCase(index){
+    const c=cases[index];
 
-  const currentCase=CASES[index];
+    if(state.coins<c.price){
+        alert("Du har inte tillräckligt med coins.");
+        return;
+    }
 
-  if(!currentCase){
-    return;
-  }
+    state.coins-=c.price;
 
-  const price=currentCase[1];
+    const item=getRandomSkin();
 
-  if(state.balance<price){
-    alert("Du har inte tillräckligt med virtuella coins.");
-    return;
-  }
+    state.inventory.push({
+        ...item,
+        id:Date.now()+Math.random()
+    });
 
-  state.balance-=price;
-
-  const skin=randomSkin();
-
-  addSkin(skin);
-
-  saveState();
-
-  showWin(skin);
+    save();
+    updateUI();
+    showResult(item);
 }
 
-/* ==============================
-   MODAL
-============================== */
+function showResult(item){
+    document.getElementById("resultIcon").textContent=item.icon;
+    document.getElementById("resultName").textContent=item.name;
+    document.getElementById("resultRarity").textContent=
+        item.rarity.toUpperCase()+" • "+item.weapon;
 
-function showWin(skin){
-
-  const modal=document.getElementById("modal");
-  const content=document.getElementById("winContent");
-
-  const isKnife=
-    skin[1].toLowerCase().includes("knife") ||
-    skin[1].toLowerCase().includes("daggers");
-
-  content.innerHTML=`
-    <div class="win-card ${skin[2]}">
-
-      <div class="win-art">
-
-        <div
-          class="weapon ${isKnife ? "knife":""}"
-          style="${skinStyle({
-            rarity:skin[2]
-          })}">
-        </div>
-
-      </div>
-
-      <h2>${skin[0]}</h2>
-
-      <div class="rarity">${skin[2]}</div>
-
-      <div class="skin-value">
-        🪙 ${skin[3]}
-      </div>
-
-    </div>
-  `;
-
-  modal.classList.add("show");
+    document.getElementById("resultRarity").className="rarity "+item.rarity;
+    document.getElementById("caseModal").classList.add("show");
 }
 
-document.getElementById("closeModal")
-  .addEventListener("click",()=>{
+function closeModal(){
+    document.getElementById("caseModal").classList.remove("show");
+}
 
-    document.getElementById("modal")
-      .classList.remove("show");
-
-  });
-
-/* ==============================
+/* =========================
    INVENTORY
-============================== */
+========================= */
 
 function renderInventory(){
+    const grid=document.getElementById("inventoryGrid");
 
-  const grid=document.getElementById("inventoryGrid");
+    if(!state.inventory.length){
+        grid.innerHTML="<p style='color:#737c89'>Inventory är tom.</p>";
+        return;
+    }
 
-  grid.innerHTML="";
+    grid.innerHTML="";
 
-  if(state.inventory.length===0){
+    state.inventory.forEach((item,index)=>{
+        const div=document.createElement("div");
+        div.className="item";
 
-    grid.innerHTML=`
-      <div class="panel">
-        Inventory är tomt.
-      </div>
-    `;
+        div.innerHTML=`
+            <div class="item-visual">${item.icon}</div>
+            <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="rarity ${item.rarity}">
+                    ${item.rarity} • ${item.weapon}
+                </div>
+                <div style="margin-top:8px;color:#707987">
+                    Value: ${item.value}
+                </div>
+                <button
+                    class="open-btn"
+                    style="margin-top:10px"
+                    onclick="selectUpgrade(${index})">
+                    USE FOR UPGRADE
+                </button>
+            </div>
+        `;
 
-    return;
-  }
-
-  state.inventory.forEach((item,index)=>{
-
-    const isKnife=
-      item.weapon.toLowerCase().includes("knife") ||
-      item.weapon.toLowerCase().includes("daggers");
-
-    const card=document.createElement("div");
-
-    card.className=
-      `skin-card ${item.rarity}`;
-
-    card.innerHTML=`
-      <div class="skin-art">
-
-        <div
-          class="weapon ${isKnife ? "knife":""}"
-          style="${skinStyle(item)}">
-        </div>
-
-      </div>
-
-      <div class="skin-info">
-
-        <div class="skin-name">
-          ${item.name}
-        </div>
-
-        <div class="weapon-name">
-          ${item.weapon}
-        </div>
-
-        <div class="rarity">
-          ${item.rarity}
-        </div>
-
-        <div class="skin-value">
-          🪙 ${item.value}
-        </div>
-
-        <button
-          class="btn btn-red full"
-          data-sell-index="${index}">
-          Sell for ${Math.floor(item.value*.65)}
-        </button>
-
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
-
-  grid.querySelectorAll("[data-sell-index]")
-    .forEach(button=>{
-
-      button.addEventListener("click",()=>{
-
-        sellItem(
-          Number(button.dataset.sellIndex)
-        );
-
-      });
-
+        grid.appendChild(div);
     });
 }
 
-function sellItem(index){
+let selectedUpgrade=null;
 
-  const item=state.inventory[index];
+function selectUpgrade(index){
+    selectedUpgrade=index;
 
-  if(!item){
-    return;
-  }
+    const item=state.inventory[index];
 
-  state.balance+=Math.floor(
-    item.value*.65
-  );
+    document.getElementById("upgradeFromIcon").textContent=item.icon;
+    document.getElementById("upgradeFrom").textContent=item.name;
 
-  state.inventory.splice(index,1);
+    const better=skins.filter(s=>s.value>item.value);
+    const target=better.length
+        ?better[Math.floor(Math.random()*better.length)]
+        :skins[skins.length-1];
 
-  saveState();
-  renderInventory();
+    document.getElementById("upgradeToIcon").textContent=target.icon;
+    document.getElementById("upgradeTo").textContent=target.name;
+
+    showPage("upgrade",document.querySelectorAll(".nav-btn")[5]);
 }
 
-/* ==============================
+/* =========================
    CLICKER
-============================== */
+========================= */
 
-document.getElementById("clickButton")
-  .addEventListener("click",()=>{
+function clickCoin(){
+    state.coins+=state.perClick;
+    state.clicks++;
 
-    state.balance+=state.clickPower;
+    save();
+    updateUI();
+}
 
-    state.clickXp+=state.clickPower;
-
-    while(state.clickXp>=100){
-
-      state.clickXp-=100;
-      state.clickLevel++;
-      state.clickPower++;
-    }
-
-    saveState();
-  });
-
-document.getElementById("clickUpgrade")
-  .addEventListener("click",()=>{
-
-    const cost=state.clickLevel*100;
-
-    if(state.balance<cost){
-      alert("Inte tillräckligt med coins.");
-      return;
-    }
-
-    state.balance-=cost;
-    state.clickPower++;
-
-    saveState();
-  });
-
-document.getElementById("luckUpgrade")
-  .addEventListener("click",()=>{
-
-    const cost=(state.luck+1)*250;
-
-    if(state.balance<cost){
-      alert("Inte tillräckligt med coins.");
-      return;
-    }
-
-    state.balance-=cost;
-    state.luck++;
-
-    saveState();
-  });
-
-/* ==============================
+/* =========================
    ROULETTE
-============================== */
+========================= */
 
-document.getElementById("rouletteButton")
-  .addEventListener("click",playRoulette);
+function createRoulette(){
+    const reel=document.getElementById("reel");
+    reel.innerHTML="";
 
-function playRoulette(){
+    for(let i=0;i<35;i++){
+        const item=getRandomSkin();
 
-  const cost=300;
+        const div=document.createElement("div");
+        div.className="reel-item";
 
-  if(state.balance<cost){
-    alert("Roulette kostar 300 virtuella coins.");
-    return;
-  }
+        div.innerHTML=`
+            <div style="font-size:40px">${item.icon}</div>
+            <div style="font-size:12px;text-align:center;margin-top:8px">
+                ${item.name}
+            </div>
+        `;
 
-  state.balance-=cost;
-
-  const reel=document.getElementById("reel");
-
-  reel.innerHTML="";
-  reel.style.transition="none";
-  reel.style.transform="translateX(0px)";
-
-  const result=randomSkin();
-  const list=[];
-
-  for(let i=0;i<35;i++){
-    list.push(randomSkin());
-  }
-
-  list[28]=result;
-
-  list.forEach(skin=>{
-
-    const card=document.createElement("div");
-
-    card.className=
-      `reel-card ${skin[2]}`;
-
-    card.innerHTML=`
-      <div>${skin[1]}</div>
-      <small>
-        ${skin[0].split("|")[1] || ""}
-      </small>
-    `;
-
-    reel.appendChild(card);
-  });
-
-  saveState();
-
-  requestAnimationFrame(()=>{
-
-    reel.style.transition=
-      "transform 3s cubic-bezier(.08,.72,.1,1)";
-
-    const distance=
-      (28*180)-190;
-
-    reel.style.transform=
-      `translateX(-${distance}px)`;
-  });
-
-  setTimeout(()=>{
-
-    addSkin(result);
-    saveState();
-    showWin(result);
-
-  },3100);
+        reel.appendChild(div);
+    }
 }
 
-/* ==============================
-   COIN FLIP
-============================== */
+function spinRoulette(){
+    const cost=100;
 
-document.querySelectorAll(".flip-button")
-  .forEach(button=>{
-
-    button.addEventListener("click",()=>{
-
-      flipCoin(button.dataset.side);
-
-    });
-
-  });
-
-function flipCoin(choice){
-
-  const coin=document.getElementById("flipCoin");
-  const result=document.getElementById("flipResult");
-
-  coin.classList.remove("spinning");
-
-  void coin.offsetWidth;
-
-  coin.classList.add("spinning");
-
-  result.textContent="Flipping...";
-
-  setTimeout(()=>{
-
-    const outcome=
-      Math.random()<.5
-      ? "HEADS"
-      : "TAILS";
-
-    coin.textContent=
-      outcome==="HEADS" ? "H" : "T";
-
-    if(choice===outcome){
-
-      const skin=randomSkin();
-
-      addSkin(skin);
-
-      result.innerHTML=
-        `<span style="color:#22c55e">
-          WIN! Du fick ${skin[0]}
-        </span>`;
-
-      saveState();
-      showWin(skin);
-
-    }else{
-
-      result.innerHTML=
-        `<span style="color:#ef4444">
-          LOSS — det blev ${outcome}
-        </span>`;
-
-      saveState();
+    if(state.coins<cost){
+        alert("Du har inte tillräckligt med coins.");
+        return;
     }
 
-  },1000);
-}
+    state.coins-=cost;
+    save();
+    updateUI();
 
-/* ==============================
-   UPGRADE
-============================== */
+    const reel=document.getElementById("reel");
 
-function renderUpgradeSelect(){
+    reel.style.transition="none";
+    reel.style.transform="translateX(0px)";
 
-  const select=
-    document.getElementById("upgradeSelect");
+    void reel.offsetWidth;
 
-  select.innerHTML="";
-
-  if(state.inventory.length===0){
-
-    const option=
-      document.createElement("option");
-
-    option.textContent=
-      "Inventory är tomt";
-
-    option.disabled=true;
-    option.selected=true;
-
-    select.appendChild(option);
-
-    return;
-  }
-
-  state.inventory.forEach((item,index)=>{
-
-    const option=
-      document.createElement("option");
-
-    option.value=index;
-
-    option.textContent=
-      `${item.name} — ${item.value} coins`;
-
-    select.appendChild(option);
-  });
-}
-
-document.getElementById("upgradeButton")
-  .addEventListener("click",upgradeSkin);
-
-function upgradeSkin(){
-
-  if(state.inventory.length===0){
-    alert("Du har inga skins.");
-    return;
-  }
-
-  const index=
-    Number(
-      document.getElementById("upgradeSelect").value
-    );
-
-  const old=state.inventory[index];
-
-  if(!old){
-    return;
-  }
-
-  const success=Math.random()<.55;
-
-  const message=
-    document.getElementById("upgradeResult");
-
-  if(!success){
-
-    message.innerHTML=
-      `<span style="color:#ef4444">
-        Upgrade failed.
-      </span>`;
-
-    return;
-  }
-
-  const better=SKINS.filter(
-    skin=>skin[3]>old.value*1.25
-  );
-
-  if(better.length===0){
-
-    message.textContent=
-      "Det finns inget bättre skin att uppgradera till.";
-
-    return;
-  }
-
-  const upgraded=
-    better[randomNumber(better.length)];
-
-  state.inventory[index]=
-    createItem(upgraded);
-
-  message.innerHTML=
-    `<span style="color:#22c55e">
-      SUCCESS — ${upgraded[0]}
-    </span>`;
-
-  saveState();
-  renderUpgradeSelect();
-}
-
-/* ==============================
-   OWNER
-============================== */
-
-const OWNER_CODE="DEMO-OWNER-2026";
-
-document.getElementById("ownerLoginButton")
-  .addEventListener("click",ownerLogin);
-
-function ownerLogin(){
-
-  const code=
-    document.getElementById("ownerCode").value;
-
-  const message=
-    document.getElementById("ownerMessage");
-
-  if(code!==OWNER_CODE){
-
-    message.textContent=
-      "Fel owner code.";
-
-    return;
-  }
-
-  state.owner=true;
-  saveState();
-
-  document.getElementById("ownerLoginBox")
-    .style.display="none";
-
-  document.getElementById("ownerPanel")
-    .style.display="block";
-
-  renderOwnerSkins();
-  renderAdminLog();
-}
-
-function renderOwnerSkins(){
-
-  const select=
-    document.getElementById("ownerSkin");
-
-  select.innerHTML="";
-
-  SKINS.forEach((skin,index)=>{
-
-    const option=
-      document.createElement("option");
-
-    option.value=index;
-
-    option.textContent=
-      `${skin[0]} — ${skin[3]} coins`;
-
-    select.appendChild(option);
-  });
-}
-
-function getTargetPlayer(){
-
-  return document
-    .getElementById("targetPlayer")
-    .value
-    .trim();
-}
-
-function addAdminLog(text){
-
-  state.adminLogs.unshift(
-    new Date().toLocaleString("sv-SE")+
-    " — "+
-    text
-  );
-
-  state.adminLogs=
-    state.adminLogs.slice(0,100);
-
-  saveState();
-  renderAdminLog();
-}
-
-function renderAdminLog(){
-
-  const log=
-    document.getElementById("adminLog");
-
-  if(!log){
-    return;
-  }
-
-  if(state.adminLogs.length===0){
-
-    log.innerHTML=
-      "<div>Ingen adminaktivitet ännu.</div>";
-
-    return;
-  }
-
-  log.innerHTML=
-    state.adminLogs
-      .map(entry=>`<div>${entry}</div>`)
-      .join("");
-}
-
-/* GIVE COINS */
-
-document.getElementById("giveCoinsButton")
-  .addEventListener("click",()=>{
-
-    const player=getTargetPlayer();
-
-    const amount=
-      Number(
-        document.getElementById("giveCoinsAmount").value
-      );
-
-    if(!player){
-      alert("Skriv ett spelarnamn.");
-      return;
-    }
-
-    if(!Number.isFinite(amount)||amount<=0){
-      alert("Skriv ett giltigt antal coins.");
-      return;
-    }
+    reel.style.transition="transform 4s cubic-bezier(.08,.7,.12,1)";
 
     /*
-      Frontend-demo:
-      Här loggas gåvan.
-      I ett riktigt multiplayer-system måste
-      servern ändra spelarens konto.
+      FIX:
+      Den gamla versionen hade en trasig template-string här.
+      Nu används korrekt JS-syntax.
     */
+    const distance=(28*180)-200;
+    reel.style.transform=`translateX(-${distance}px)`;
 
-    addAdminLog(
-      `Owner gav ${amount} coins till ${player}`
-    );
+    setTimeout(()=>{
+        const item=getRandomSkin();
 
-    alert(
-      `Gåva registrerad: ${amount} coins → ${player}`
-    );
-  });
+        state.inventory.push({
+            ...item,
+            id:Date.now()+Math.random()
+        });
 
-/* GIVE COINS SELF */
+        save();
+        updateUI();
 
-document.getElementById("selfCoinsButton")
-  .addEventListener("click",()=>{
+        showResult(item);
+    },4100);
+}
 
-    const amount=10000;
+/* =========================
+   COIN FLIP
+========================= */
 
-    state.balance+=amount;
+function coinFlip(choice){
+    const cost=50;
 
-    addAdminLog(
-      `Owner gav sig själv ${amount} coins`
-    );
-
-    saveState();
-
-    alert(
-      `Du fick ${amount} virtuella coins.`
-    );
-  });
-
-/* GIVE SKIN */
-
-document.getElementById("giveSkinButton")
-  .addEventListener("click",()=>{
-
-    const player=getTargetPlayer();
-
-    if(!player){
-      alert("Skriv ett spelarnamn.");
-      return;
+    if(state.coins<cost){
+        alert("Du har inte tillräckligt med coins.");
+        return;
     }
 
-    const index=
-      Number(
-        document.getElementById("ownerSkin").value
-      );
+    state.coins-=cost;
 
-    const skin=SKINS[index];
+    const result=Math.random()<.5?"heads":"tails";
 
-    if(!skin){
-      return;
+    const coin=document.getElementById("flipCoin");
+    const text=document.getElementById("flipResult");
+
+    coin.textContent="...";
+
+    setTimeout(()=>{
+        coin.textContent=result.toUpperCase();
+
+        if(choice===result){
+            state.coins+=100;
+            text.textContent="Du vann! +100 coins.";
+            text.style.color="#61d27b";
+        }else{
+            text.textContent="Du förlorade.";
+            text.style.color="#e05b5b";
+        }
+
+        save();
+        updateUI();
+    },900);
+}
+
+/* =========================
+   UPGRADE
+========================= */
+
+function doUpgrade(){
+    if(selectedUpgrade===null){
+        alert("Välj ett item från inventory först.");
+        return;
     }
 
-    addAdminLog(
-      `Owner gav ${skin[0]} till ${player}`
-    );
+    const item=state.inventory[selectedUpgrade];
 
-    alert(
-      `${skin[0]} skickades till ${player}.`
-    );
-  });
-
-/* GIVE SKIN SELF */
-
-document.getElementById("selfSkinButton")
-  .addEventListener("click",()=>{
-
-    const index=
-      Number(
-        document.getElementById("ownerSkin").value
-      );
-
-    const skin=SKINS[index];
-
-    if(!skin){
-      return;
+    if(!item){
+        selectedUpgrade=null;
+        return;
     }
 
-    addSkin(skin);
+    const better=skins.filter(s=>s.value>item.value);
 
-    addAdminLog(
-      `Owner gav sig själv ${skin[0]}`
-    );
+    if(!better.length){
+        alert("Det finns inget bättre mål.");
+        return;
+    }
 
-    saveState();
+    const target=better[Math.floor(Math.random()*better.length)];
 
-    alert(
-      `Du fick ${skin[0]}.`
-    );
-  });
+    /*
+      45% success.
+      Det här är en virtuell spelmekanik utan riktiga pengar.
+    */
+    const success=Math.random()<.45;
 
-/* ==============================
+    if(success){
+        state.inventory[selectedUpgrade]={
+            ...target,
+            id:Date.now()+Math.random()
+        };
+
+        alert("Upgrade lyckades: "+target.name);
+    }else{
+        state.inventory.splice(selectedUpgrade,1);
+        alert("Upgrade misslyckades.");
+    }
+
+    selectedUpgrade=null;
+
+    document.getElementById("upgradeFromIcon").textContent="?";
+    document.getElementById("upgradeFrom").textContent="Välj från inventory";
+
+    document.getElementById("upgradeToIcon").textContent="?";
+    document.getElementById("upgradeTo").textContent="Random target";
+
+    save();
+    updateUI();
+}
+
+/* =========================
+   OWNER LOGIN
+========================= */
+
+function loginOwner(){
+    const code=document.getElementById("ownerCode").value;
+
+    /*
+      Demo-only owner code.
+      I en riktig multiplayer-version ska detta kontrolleras
+      på servern och aldrig ligga i frontend.
+    */
+    if(code==="Adminmelle123"){
+        document.getElementById("ownerLogin").style.display="none";
+        document.getElementById("ownerPanel").style.display="block";
+        document.getElementById("ownerError").textContent="";
+    }else{
+        document.getElementById("ownerError").textContent="Fel owner code.";
+    }
+}
+
+/* =========================
+   OWNER — COINS
+========================= */
+
+function giveCoins(target){
+    const amount=Number(document.getElementById("coinAmount").value);
+
+    if(!amount || amount<=0){
+        alert("Ange ett giltigt antal coins.");
+        return;
+    }
+
+    if(target==="self"){
+        state.coins+=amount;
+        alert("Du fick "+amount+" coins.");
+    }else{
+        const name=document.getElementById("targetPlayer").value.trim();
+
+        if(!name){
+            alert("Ange player name.");
+            return;
+        }
+
+        if(!state.players[name]){
+            state.players[name]={
+                coins:0,
+                inventory:[]
+            };
+        }
+
+        state.players[name].coins+=amount;
+
+        alert(name+" fick "+amount+" coins.");
+    }
+
+    save();
+    updateUI();
+}
+
+/* =========================
+   OWNER — SKINS
+========================= */
+
+function populateSkinSelect(){
+    const select=document.getElementById("skinSelect");
+
+    skins.forEach((skin,index)=>{
+        const option=document.createElement("option");
+
+        option.value=index;
+        option.textContent=
+            `${skin.name} — ${skin.rarity} — ${skin.value}`;
+
+        select.appendChild(option);
+    });
+}
+
+function giveSkin(target){
+    const index=Number(document.getElementById("skinSelect").value);
+    const skin=skins[index];
+
+    if(!skin) return;
+
+    if(target==="self"){
+        state.inventory.push({
+            ...skin,
+            id:Date.now()+Math.random()
+        });
+
+        alert("Du fick "+skin.name+".");
+    }else{
+        const name=document.getElementById("skinPlayer").value.trim();
+
+        if(!name){
+            alert("Ange player name.");
+            return;
+        }
+
+        if(!state.players[name]){
+            state.players[name]={
+                coins:0,
+                inventory:[]
+            };
+        }
+
+        state.players[name].inventory.push({
+            ...skin,
+            id:Date.now()+Math.random()
+        });
+
+        alert(name+" fick "+skin.name+".");
+    }
+
+    save();
+    updateUI();
+}
+
+/* =========================
+   PLAYER LIST
+========================= */
+
+function renderPlayers(){
+    const list=document.getElementById("playerList");
+
+    if(!list) return;
+
+    list.innerHTML="";
+
+    Object.entries(state.players).forEach(([name,player])=>{
+        const div=document.createElement("div");
+        div.className="player";
+
+        div.innerHTML=`
+            <div>
+                <b>${name}</b><br>
+                <small>${player.inventory.length} items</small>
+            </div>
+
+            <div style="color:#e5a62b">
+                ${Math.floor(player.coins)} coins
+            </div>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+/* =========================
+   RESET
+========================= */
+
+function resetGame(){
+    if(!confirm("Är du säker på att du vill radera all lokal data?")) return;
+
+    localStorage.removeItem("caseforge_state");
+    location.reload();
+}
+
+/* =========================
    START
-============================== */
+========================= */
 
 renderCases();
-renderOwnerSkins();
-renderUpgradeSelect();
-renderAdminLog();
+populateSkinSelect();
+createRoulette();
 updateUI();
-
 </script>
 
 </body>
